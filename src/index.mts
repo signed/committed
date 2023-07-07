@@ -1,14 +1,15 @@
 import 'dotenv/config'
 import {simpleGit} from 'simple-git'
 import {absolutePathFor} from "./path.mjs";
+import {extractTicketReferencesFrom} from "./project.mjs";
 
 const baseDirectory = absolutePathFor(process.env['BASE_DIRECTORY'] ?? process.cwd())
 const from = process.env['FROM']
 const to = process.env['TO']
 const project = process.env['PROJECT']
 
-if (from === undefined || to === undefined) {
-    console.log('from and to are mandatory')
+if (from === undefined || to === undefined || project === undefined) {
+    console.log('project, from and to are mandatory')
     process.exit(1)
 }
 
@@ -21,5 +22,7 @@ const out = await git.log({
 
 });
 const subjects = out.all.map(l => l.subject);
-console.log(subjects)
-console.log(project)
+
+const ticketReferences = subjects.flatMap(subject => extractTicketReferencesFrom(subject, project));
+const uniqueTicketReferences = [...new Set(ticketReferences)];
+console.log(uniqueTicketReferences)
