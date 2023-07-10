@@ -7,6 +7,7 @@ const baseDirectory = absolutePathFor(process.env['BASE_DIRECTORY'] ?? process.c
 const from = process.env['FROM']
 const to = process.env['TO']
 const project = process.env['PROJECT']
+const ticketUrl = process.env['TICKET_URL']
 
 if (from === undefined || to === undefined || project === undefined) {
     console.log('project, from and to are mandatory')
@@ -25,4 +26,5 @@ const subjects = out.all.map(l => l.subject);
 
 const ticketReferences = subjects.flatMap(subject => extractTicketReferencesFrom(subject, project));
 const uniqueTicketReferences = [...new Set(ticketReferences)];
-console.log(uniqueTicketReferences)
+const ticketLinks = uniqueTicketReferences.map(ticketId => ticketUrl + ticketId )
+console.log(ticketLinks)
