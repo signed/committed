@@ -1,30 +1,14 @@
 import 'dotenv/config'
-import {simpleGit} from 'simple-git'
-import {absolutePathFor} from "./path.mjs";
-import {extractTicketReferencesFrom} from "./project.mjs";
 
-const baseDirectory = absolutePathFor(process.env['BASE_DIRECTORY'] ?? process.cwd())
-const from = process.env['FROM']
-const to = process.env['TO']
-const project = process.env['PROJECT']
-const ticketUrl = process.env['TICKET_URL']
+import { loadConfigurationFrom } from '../server/configuration'
+import { extractReferencedTicketUrls } from './pages/index/ExtractReferencedTicketUrls'
 
-if (from === undefined || to === undefined || project === undefined) {
-    console.log('project, from and to are mandatory')
-    process.exit(1)
+const configuration = loadConfigurationFrom(process.env)
+if (configuration === 'failed') {
+  console.log('project, from and to are mandatory')
+  process.exit(1)
 }
 
-const git = simpleGit(baseDirectory);
-const out = await git.log({
-    format: {subject: '%s'},
-    '--ancestry-path': null,
-    from: from,
-    to: to
-
-});
-const subjects = out.all.map(l => l.subject);
-
-const ticketReferences = subjects.flatMap(subject => extractTicketReferencesFrom(subject, project));
-const uniqueTicketReferences = [...new Set(ticketReferences)];
-const ticketLinks = uniqueTicketReferences.map(ticketId => ticketUrl + ticketId )
+//@ts-expect-error running on node 20 where this is supported but still have to figure out tsconfig setup
+const ticketLinks = await extractReferencedTicketUrls(configuration)
 console.log(ticketLinks)
