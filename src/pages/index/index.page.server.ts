@@ -5,7 +5,7 @@ import type { PageProperties } from './index.page'
 export async function onBeforeRender(context: PageContextServer) {
   const ticketLinks = await extractReferencedTicketUrls(context.configuration)
   const pageProps: PageProperties = {
-    referencedTickets: ticketLinks,
+    ticketIdentifierToDetails: ticketLinks,
   }
   return {
     pageContext: {

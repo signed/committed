@@ -1,7 +1,7 @@
-import { ReferencedTicket } from './ExtractReferencedTicketUrls'
+import { TicketIdentifierToDetails } from './ExtractReferencedTicketUrls'
 
 export type PageProperties = {
-  referencedTickets: ReferencedTicket[]
+  ticketIdentifierToDetails: TicketIdentifierToDetails
 }
 
 export function Page(properties: PageProperties) {
@@ -9,13 +9,15 @@ export function Page(properties: PageProperties) {
     <>
       <h1>Referenced Tickets</h1>
       <ul>
-        {properties.referencedTickets.map((ticket) => (
-          <li key={ticket.ticketIdentifier}>
-            <a href={ticket.ticketUrl} target="_blank" rel="noreferrer">
-              {ticket.ticketIdentifier}
-            </a>
-          </li>
-        ))}
+        {Array.from(properties.ticketIdentifierToDetails).map(([ticketIdentifier, details]) => {
+          return (
+            <li key={ticketIdentifier}>
+              <a href={details.ticket.url} target="_blank" rel="noreferrer">
+                {ticketIdentifier}
+              </a>
+            </li>
+          )
+        })}
       </ul>
     </>
   )
