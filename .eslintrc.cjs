@@ -18,7 +18,7 @@ module.exports = {
   parser: '@typescript-eslint/parser',
   overrides: [
     {
-      files: "**/*.+(ts|tsx)",
+      files: '**/*.+(ts|tsx)',
       rules: {
         '@typescript-eslint/no-empty-function': 'off',
         '@typescript-eslint/no-explicit-any': 'off',

@@ -1,4 +1,4 @@
-import {TicketIdentifier} from "./pages/index/ExtractReferencedTicketUrls";
+import { TicketIdentifier } from './pages/index/ExtractReferencedTicketUrls'
 
 export const extractTicketReferencesFrom = (subject: string, projectKey: string): TicketIdentifier[] => {
   const re = new RegExp(`${projectKey}-\\d+`, 'g')
