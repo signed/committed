@@ -5,6 +5,12 @@ export type CommitRange = {
   to: Treeish
 }
 
+export type GitRangeProps = { range: CommitRange }
+
+export function GitRange(props: GitRangeProps) {
+  return <div>{props.range.from + '...' + props.range.to}</div>
+}
+
 export type SampleLabelingProps = {
   project: string
   range: CommitRange
@@ -13,13 +19,8 @@ export type SampleLabelingProps = {
 export function SampleLabeling(props: SampleLabelingProps) {
   return (
     <div>
-      <div>{props.project}</div>
-      <div>
-        <ul>
-          <li>{props.range.from}</li>
-          <li>{props.range.from}</li>
-        </ul>
-      </div>
+      <div>{props.project + ' / '}</div>
+      <GitRange range={props.range}></GitRange>
     </div>
   )
 }
