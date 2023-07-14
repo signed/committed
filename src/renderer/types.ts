@@ -8,9 +8,9 @@ export type { PageProps }
 import type {
   PageContextBuiltIn,
   /*
-  // When using Client Routing https://vite-plugin-ssr.com/clientRouting
-  PageContextBuiltInClientWithClientRouting as PageContextBuiltInClient
-  /*/
+    // When using Client Routing https://vite-plugin-ssr.com/clientRouting
+    PageContextBuiltInClientWithClientRouting as PageContextBuiltInClient
+    /*/
   // When using Server Routing
   PageContextBuiltInClientWithServerRouting as PageContextBuiltInClient,
   //*/
@@ -23,6 +23,7 @@ export type PageContextCustom = {
   Page: Page
   pageProps?: PageProps
   urlPathname: string
+  project: string
   configuration: Configuration
   exports: {
     documentProps?: {

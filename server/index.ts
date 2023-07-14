@@ -10,6 +10,8 @@ import compression from 'compression'
 import { renderPage } from 'vite-plugin-ssr/server'
 import { root } from './root.js'
 import { loadConfigurationFrom } from './configuration'
+import * as fs from 'node:fs'
+import { deriveProjectFrom } from './path'
 
 const isProduction = process.env['NODE_ENV'] === 'production'
 
@@ -18,6 +20,14 @@ if (configuration === 'failed') {
   console.error('missing configuration')
   process.exit(1)
 }
+const baseDirectory = configuration.repository.baseDirectory
+const stat = fs.lstatSync(baseDirectory)
+if (!stat.isDirectory()) {
+  console.error(`${baseDirectory} is not a directory`)
+  process.exit(1)
+}
+
+const project = deriveProjectFrom(baseDirectory)
 
 startServer().catch((e) => console.log(e))
 
@@ -55,6 +65,7 @@ async function startServer() {
   app.get('*', async (req, res, next) => {
     const pageContextInit = {
       urlOriginal: req.originalUrl,
+      project,
       configuration,
     }
     const pageContext = await renderPage(pageContextInit)

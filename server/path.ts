@@ -11,3 +11,7 @@ const replaceTilde = (path: string) => {
   }
   throw path
 }
+
+export function deriveProjectFrom(base: string) {
+  return path.basename(base)
+}

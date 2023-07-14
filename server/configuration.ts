@@ -1,11 +1,10 @@
 import { absolutePathFor } from './path'
-
-type Gitish = string
+import { Treeish } from '../src/sample-labeling'
 
 export type GitRepositoryConfiguration = {
   baseDirectory: string
-  from: Gitish
-  to: Gitish
+  from: Treeish
+  to: Treeish
 }
 
 export type Configuration = {
