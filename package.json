@@ -16,7 +16,7 @@
     "lint": "eslint . --max-warnings 0",
     "clean": "rimraf ./dist",
     "format": "prettier --write .",
-    "execute": "tsx src/index.mts"
+    "execute": "tsx src/index.ts"
   },
   "dependencies": {
     "compression": "1.7.4",

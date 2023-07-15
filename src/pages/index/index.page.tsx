@@ -1,6 +1,7 @@
 import { TicketIdentifierToDetails } from './ExtractReferencedTicketUrls'
 import { authorsByCommits } from '../../commits'
-import { CommitRange, SampleLabeling } from '../../sample-labeling'
+import { SampleLabelingView } from '../../sample-labeling-view'
+import { CommitRange } from '../../project'
 
 export type PageProperties = {
   ticketIdentifierToDetails: TicketIdentifierToDetails
@@ -11,7 +12,7 @@ export type PageProperties = {
 export function Page(props: PageProperties) {
   return (
     <>
-      <SampleLabeling project={props.project} range={props.range}></SampleLabeling>
+      <SampleLabelingView project={props.project} range={props.range}></SampleLabelingView>
       <h1>Referenced Tickets</h1>
       <ul>
         {Array.from(props.ticketIdentifierToDetails).map(([ticketIdentifier, details]) => {

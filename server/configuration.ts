@@ -1,5 +1,6 @@
 import { absolutePathFor } from './path'
-import { Treeish } from '../src/sample-labeling'
+
+import { Treeish } from '../src/project'
 
 export type GitRepositoryConfiguration = {
   baseDirectory: string

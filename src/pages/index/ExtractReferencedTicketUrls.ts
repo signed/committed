@@ -1,6 +1,6 @@
 import { Configuration } from '../../../server/configuration'
 import { simpleGit } from 'simple-git'
-import { extractTicketReferencesFrom } from '../../project.mjs'
+import { extractTicketReferencesFrom } from '../../project'
 
 export type TicketIdentifier = string
 

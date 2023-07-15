@@ -1,4 +1,4 @@
-import './code.css'
+import '../../code.css'
 import { Counter } from './Counter'
 
 export function Page() {
