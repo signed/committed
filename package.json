@@ -16,7 +16,8 @@
     "lint": "eslint . --max-warnings 0",
     "clean": "rimraf ./dist",
     "format": "prettier --write .",
-    "execute": "tsx src/index.ts"
+    "execute": "tsx src/index.ts",
+    "nit-pick": "pnpm format && pnpm lint && pnpm test && pnpm typecheck"
   },
   "dependencies": {
     "compression": "1.7.4",

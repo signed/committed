@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { extractTicketReferencesFrom } from './project.mjs'
+import { extractTicketReferencesFrom } from './project'
 
 describe('extract ticket references from subject', () => {
   it('return undefined in case there is no ticket reference', async () => {
