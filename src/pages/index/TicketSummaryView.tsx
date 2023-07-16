@@ -1,17 +1,16 @@
-import { TicketDetails } from './ExtractReferencedTicketUrls'
+import { CommitsContainer } from './ExtractReferencedTicketUrls'
 
 import { ExternalLink } from './ExternalLink'
 import { useAbstractToDetail } from '../../AbstractToDetails/abstract-to-details-hook'
 
-export function TicketSummaryView(props: { className?: string; ticketDetails: TicketDetails }) {
+export function TicketSummaryView(props: { className?: string; ticketDetails: CommitsContainer }) {
   const { displayDetailsFor, selected } = useAbstractToDetail()
-  const ticketIdentifier = props.ticketDetails.ticket.identifier
-  const className = [props.className, selected === props.ticketDetails.ticket.identifier && 'active']
-    .filter(Boolean)
-    .join(' ')
+  const ticket = props.ticketDetails.ticket
+  const className = [props.className, selected === ticket.identifier && 'active'].filter(Boolean).join(' ')
   return (
-    <div className={className} onClick={() => displayDetailsFor(ticketIdentifier)}>
-      <ExternalLink text={ticketIdentifier} destination={props.ticketDetails.ticket.url} />
+    <div className={className} onClick={() => displayDetailsFor(ticket.identifier)}>
+      <span>{ticket.identifier}</span>
+      {ticket.kind === 'ticket' && <ExternalLink destination={ticket.url} />}
     </div>
   )
 }

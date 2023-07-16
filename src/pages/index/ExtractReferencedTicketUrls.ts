@@ -5,8 +5,14 @@ import { extractTicketReferencesFrom } from '../../project'
 export type TicketIdentifier = string
 
 export type Ticket = {
+  kind: 'ticket'
   identifier: TicketIdentifier
   url: string
+}
+
+export type NoTicket = {
+  kind: 'no-ticket'
+  identifier: 'no ticket'
 }
 
 export type Hash = string
@@ -20,11 +26,11 @@ export type Commit = {
   authorDate: Date
 }
 
-export type TicketDetails = {
-  ticket: Ticket
+export type CommitsContainer = {
+  ticket: Ticket | NoTicket
   commits: Commit[]
 }
-export type TicketIdentifierToDetails = Map<TicketIdentifier, TicketDetails>
+export type TicketIdentifierToDetails = Map<TicketIdentifier, CommitsContainer>
 
 export const extractReferencedTicketUrls = async (configuration: Configuration): Promise<TicketIdentifierToDetails> => {
   const git = simpleGit(configuration.repository.baseDirectory)
@@ -43,10 +49,20 @@ export const extractReferencedTicketUrls = async (configuration: Configuration):
   const ticketToCommits: TicketIdentifierToDetails = new Map()
   commits.forEach((commit: Commit) => {
     const ticketIdentifiers = extractTicketReferencesFrom(commit.subject, configuration.ticketing.project)
+    if (ticketIdentifiers.length === 0) {
+      let details = ticketToCommits.get('no-ticket')
+      if (details === undefined) {
+        const noTicket = { kind: 'no-ticket', identifier: 'no ticket' } satisfies NoTicket
+        details = { ticket: noTicket, commits: [] }
+        ticketToCommits.set('no ticket', details)
+      }
+      details.commits.push(commit)
+    }
     ticketIdentifiers.forEach((ticketIdentifier) => {
       let details = ticketToCommits.get(ticketIdentifier)
       if (details === undefined) {
-        const ticket = {
+        const ticket: Ticket = {
+          kind: 'ticket',
           identifier: ticketIdentifier,
           url: configuration.ticketing.url + ticketIdentifier,
         }

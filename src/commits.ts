@@ -1,8 +1,8 @@
-import { Author, Commit, TicketDetails, TicketIdentifierToDetails } from './pages/index/ExtractReferencedTicketUrls'
+import { Author, Commit, CommitsContainer, TicketIdentifierToDetails } from './pages/index/ExtractReferencedTicketUrls'
 
 export type AuthorWithCommitCount = { name: Author; count: number }
 
-export const authorsByCommits = (details: TicketDetails) => {
+export const authorsByCommits = (details: CommitsContainer) => {
   const commits = details.commits
   const statistic = commits.reduce((a, c) => {
     const author = c.author

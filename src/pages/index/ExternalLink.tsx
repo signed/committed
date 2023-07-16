@@ -1,9 +1,8 @@
 import * as React from 'react'
 
-export function ExternalLink(props: { text: string; destination: string }) {
+export function ExternalLink(props: { destination: string }) {
   return (
     <>
-      <span>{props.text}</span>
       <a href={props.destination} target="_blank" rel="noreferrer">
         <ExternalLinkIcon />
       </a>
