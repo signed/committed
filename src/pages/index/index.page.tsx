@@ -5,6 +5,7 @@ import '../../AbstractToDetails/AbstractToDetails.css'
 import { AbstractToDetail } from '../../AbstractToDetails/abstract-to-detail'
 import { TicketSummaryView } from './TicketSummaryView'
 import { TicketDetailsView } from './TicketDetailsView'
+import { timeSpanOver } from '../../commits'
 
 export type PageProperties = {
   ticketIdentifierToDetails: TicketIdentifierToDetails
@@ -40,9 +41,13 @@ function How(props: { ticketIdentifierToDetails: TicketIdentifierToDetails }) {
 }
 
 export function Page(props: PageProperties) {
+  const timeSpan = timeSpanOver(props.ticketIdentifierToDetails)
+  if (timeSpan === undefined) {
+    return null
+  }
   return (
     <>
-      <SampleLabelingView project={props.project} range={props.range}></SampleLabelingView>
+      <SampleLabelingView project={props.project} range={props.range} timeSpan={timeSpan}></SampleLabelingView>
       <h1>Referenced Tickets</h1>
       <How ticketIdentifierToDetails={props.ticketIdentifierToDetails}></How>
     </>
