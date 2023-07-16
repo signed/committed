@@ -11,10 +11,17 @@ export function TicketDetailsView(props: { ticketIdentifierToDetails: TicketIden
   }
 
   return (
-    <ol>
-      {authorsByCommits(details).map((author) => (
-        <li key={author.name}>{`${author.name} (#${author.count})`}</li>
-      ))}
-    </ol>
+    <>
+      <ol>
+        {authorsByCommits(details).map((author) => (
+          <li key={author.name}>{`${author.name} (#${author.count})`}</li>
+        ))}
+      </ol>
+      <ul>
+        {details.commits.map((commit) => {
+          return <li key={commit.hash}>{commit.subject}</li>
+        })}
+      </ul>
+    </>
   )
 }
