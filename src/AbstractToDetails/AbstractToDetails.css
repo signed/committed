@@ -1,0 +1,8 @@
+/* This CSS is common to all pages */
+
+.abstractitem {
+  padding: 3px 10px;
+}
+.abstractitem.active {
+  background-color: #eee;
+}

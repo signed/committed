@@ -1,7 +1,10 @@
 import { TicketIdentifierToDetails } from './ExtractReferencedTicketUrls'
-import { authorsByCommits } from '../../commits'
 import { SampleLabelingView } from '../../sample-labeling-view'
 import { CommitRange } from '../../project'
+import '../../AbstractToDetails/AbstractToDetails.css'
+import { AbstractToDetail } from '../../AbstractToDetails/abstract-to-detail'
+import { TicketSummaryView } from './TicketSummaryView'
+import { TicketDetailsView } from './TicketDetailsView'
 
 export type PageProperties = {
   ticketIdentifierToDetails: TicketIdentifierToDetails
@@ -9,27 +12,39 @@ export type PageProperties = {
   range: CommitRange
 }
 
+function How(props: { ticketIdentifierToDetails: TicketIdentifierToDetails }) {
+  const first = Array.from(props.ticketIdentifierToDetails.keys())[0]
+  if (first === undefined) {
+    return <div>nothing to display</div>
+  }
+  return (
+    <>
+      <AbstractToDetail initial={first}>
+        <AbstractToDetail.Abstract>
+          {Array.from(props.ticketIdentifierToDetails).map(([ticketIdentifier, details]) => {
+            return (
+              <TicketSummaryView
+                key={ticketIdentifier}
+                className="abstractitem"
+                ticketDetails={details}
+              ></TicketSummaryView>
+            )
+          })}
+        </AbstractToDetail.Abstract>
+        <AbstractToDetail.Detail>
+          <TicketDetailsView ticketIdentifierToDetails={props.ticketIdentifierToDetails} />
+        </AbstractToDetail.Detail>
+      </AbstractToDetail>
+    </>
+  )
+}
+
 export function Page(props: PageProperties) {
   return (
     <>
       <SampleLabelingView project={props.project} range={props.range}></SampleLabelingView>
       <h1>Referenced Tickets</h1>
-      <ul>
-        {Array.from(props.ticketIdentifierToDetails).map(([ticketIdentifier, details]) => {
-          return (
-            <li key={ticketIdentifier}>
-              <a href={details.ticket.url} target="_blank" rel="noreferrer">
-                {ticketIdentifier}
-              </a>
-              <ol>
-                {authorsByCommits(details).map((author) => (
-                  <li key={author.name}>{`${author.name} (#${author.count})`}</li>
-                ))}
-              </ol>
-            </li>
-          )
-        })}
-      </ul>
+      <How ticketIdentifierToDetails={props.ticketIdentifierToDetails}></How>
     </>
   )
 }
