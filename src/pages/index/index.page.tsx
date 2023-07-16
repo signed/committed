@@ -13,13 +13,20 @@ export type PageProperties = {
   range: CommitRange
 }
 
-function How(props: { ticketIdentifierToDetails: TicketIdentifierToDetails }) {
+export function Page(props: PageProperties) {
+  const timeSpan = timeSpanOver(props.ticketIdentifierToDetails)
+  if (timeSpan === undefined) {
+    return null
+  }
   const first = Array.from(props.ticketIdentifierToDetails.keys())[0]
   if (first === undefined) {
     return <div>nothing to display</div>
   }
+
   return (
     <>
+      <SampleLabelingView project={props.project} range={props.range} timeSpan={timeSpan}></SampleLabelingView>
+      <h1>Referenced Tickets</h1>
       <AbstractToDetail initial={first}>
         <AbstractToDetail.Abstract>
           {Array.from(props.ticketIdentifierToDetails).map(([ticketIdentifier, details]) => {
@@ -36,20 +43,6 @@ function How(props: { ticketIdentifierToDetails: TicketIdentifierToDetails }) {
           <TicketDetailsView ticketIdentifierToDetails={props.ticketIdentifierToDetails} />
         </AbstractToDetail.Detail>
       </AbstractToDetail>
-    </>
-  )
-}
-
-export function Page(props: PageProperties) {
-  const timeSpan = timeSpanOver(props.ticketIdentifierToDetails)
-  if (timeSpan === undefined) {
-    return null
-  }
-  return (
-    <>
-      <SampleLabelingView project={props.project} range={props.range} timeSpan={timeSpan}></SampleLabelingView>
-      <h1>Referenced Tickets</h1>
-      <How ticketIdentifierToDetails={props.ticketIdentifierToDetails}></How>
     </>
   )
 }
