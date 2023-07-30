@@ -1,6 +1,3 @@
-// See https://vite-plugin-ssr.com/data-fetching
-export const passToClient = ['pageProps', 'urlPathname']
-
 import ReactDOMServer from 'react-dom/server'
 import { PageShell } from './PageShell'
 import { escapeInject, dangerouslySkipEscape } from 'vite-plugin-ssr/server'
@@ -43,3 +40,5 @@ export async function render(pageContext: PageContextServer) {
     },
   }
 }
+
+export default render

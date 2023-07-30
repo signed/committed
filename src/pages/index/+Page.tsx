@@ -46,3 +46,5 @@ export function Page(props: PageProperties) {
     </>
   )
 }
+
+export default Page

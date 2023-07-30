@@ -15,3 +15,5 @@ export function Page({ is404 }: { is404: boolean }) {
     )
   }
 }
+
+export default Page
