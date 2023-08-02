@@ -1,7 +1,7 @@
 import '../../code.css'
 import { Counter } from './Counter'
 
-export function Page() {
+function Page() {
   return (
     <>
       <h1>About</h1>

@@ -2,7 +2,7 @@ import type { PageContextServer } from '../../renderer/types'
 import { extractReferencedTicketUrls } from './ExtractReferencedTicketUrls'
 import type { PageProperties } from './+Page'
 
-export async function onBeforeRender(context: PageContextServer) {
+async function onBeforeRender(context: PageContextServer) {
   const ticketLinks = await extractReferencedTicketUrls(context.configuration)
   const repository = context.configuration.repository
   const pageProps: PageProperties = {

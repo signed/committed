@@ -13,7 +13,7 @@ export type PageProperties = {
   range: CommitRange
 }
 
-export function Page(props: PageProperties) {
+function Page(props: PageProperties) {
   const timeSpan = timeSpanOver(props.ticketIdentifierToDetails)
   if (timeSpan === undefined) {
     return null
