@@ -2,7 +2,7 @@
   "name": "ts-starter",
   "version": "1.0.0",
   "description": "Basic typescript setup for tdd",
-  "packageManager": "pnpm@8.6.7",
+  "packageManager": "pnpm@8.6.11",
   "private": true,
   "type": "module",
   "scripts": {
@@ -20,6 +20,8 @@
     "nit-pick": "pnpm format && pnpm lint && pnpm test && pnpm typecheck"
   },
   "dependencies": {
+    "@trpc/client": "10.37.1",
+    "@trpc/server": "10.37.1",
     "compression": "1.7.4",
     "dotenv": "16.3.1",
     "express": "4.18.2",
@@ -28,7 +30,8 @@
     "simple-git": "3.19.1",
     "sirv": "2.0.3",
     "vite": "4.4.8",
-    "vite-plugin-ssr": "0.4.134"
+    "vite-plugin-ssr": "0.4.134",
+    "zod": "3.21.4"
   },
   "devDependencies": {
     "@signed/prettier-config": "0.1.0",
