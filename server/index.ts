@@ -70,10 +70,15 @@ async function startServer() {
     }
     const pageContext = await renderPage(pageContextInit)
     const { httpResponse } = pageContext
-    if (!httpResponse) return next()
-    const { body, statusCode, contentType, earlyHints } = httpResponse
+    if (!httpResponse) {
+      return next()
+    }
+    const { body, statusCode, headers, earlyHints } = httpResponse
     if (res.writeEarlyHints) res.writeEarlyHints({ link: earlyHints.map((e) => e.earlyHintLink) })
-    res.status(statusCode).type(contentType).send(body)
+    headers.forEach(([name, value]) => res.setHeader(name, value))
+    res.status(statusCode)
+    // For HTTP streams use httpResponse.pipe() instead, see https://vite-plugin-ssr.com/stream
+    res.send(body)
   })
 
   const port = process.env['PORT'] || 3000
