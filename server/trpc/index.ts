@@ -1,5 +1,4 @@
 import { initTRPC, TRPCError } from '@trpc/server'
-import { EventEmitter } from 'events'
 import { z } from 'zod'
 import { TrpcContext } from './context'
 import { idGenerator, inMemoryDatabase, Message } from './in-memory-database'
@@ -8,19 +7,15 @@ const t = initTRPC.context<TrpcContext>().create()
 const router = t.router
 const publicProcedure = t.procedure
 
-const eventEmitter = new EventEmitter()
-
 inMemoryDatabase.messages.push(createMessage('initial message'))
 
 function createMessage(text: string): Message {
-  const msg = {
+  return {
     id: idGenerator.nextMessageId(),
     text,
     createdAt: Date.now(),
     updatedAt: Date.now(),
   }
-  eventEmitter.emit('newMessage', msg)
-  return msg
 }
 
 const postRouter = router({
