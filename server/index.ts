@@ -13,7 +13,8 @@ import { loadConfigurationFrom } from './configuration'
 import * as fs from 'node:fs'
 import { deriveProjectFrom } from './path'
 import * as trpcExpress from '@trpc/server/adapters/express'
-import { appRouter, createContext } from './trpc'
+import { appRouter } from './trpc'
+import { createContext } from './trpc/context'
 
 const isProduction = process.env['NODE_ENV'] === 'production'
 
