@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { createTRPCProxyClient, httpBatchLink } from '@trpc/client'
 import { Counter } from './Counter'
-import type { AppRouter } from '../../../server'
+import type { AppRouter } from '../../../server/trpc'
 import '../../code.css'
 
 const client = createTRPCProxyClient<AppRouter>({
