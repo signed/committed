@@ -18,14 +18,20 @@ function createMessage(text: string): Message {
   }
 }
 
+const CreatePostSchema = z.object({ title: z.string() })
+
+function createPostFrom(title: string) {
+  const post = {
+    id: idGenerator.nextPostId(),
+    title,
+  }
+  inMemoryDatabase.posts.push(post)
+  return post
+}
+
 const postRouter = router({
-  createPost: t.procedure.input(z.object({ title: z.string() })).mutation(({ input }) => {
-    const post = {
-      id: idGenerator.nextPostId(),
-      ...input,
-    }
-    inMemoryDatabase.posts.push(post)
-    return post
+  createPost: t.procedure.input(CreatePostSchema).mutation(({ input }) => {
+    return createPostFrom(input.title)
   }),
   listPosts: publicProcedure.query(() => inMemoryDatabase.posts),
 })
