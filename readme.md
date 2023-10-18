@@ -4,5 +4,5 @@ Small fun project to play around with Server Side Rendering (SSR).
 
 # Tools
 
-- https://vite-plugin-ssr.com
+- https://vike.dev
 - 🔎 [vavite](https://github.com/cyco130/vavite)

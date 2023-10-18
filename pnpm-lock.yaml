@@ -32,12 +32,12 @@ dependencies:
   sirv:
     specifier: 2.0.3
     version: 2.0.3
+  vike:
+    specifier: 0.4.143
+    version: 0.4.143(vite@4.5.0)
   vite:
     specifier: 4.5.0
     version: 4.5.0(@types/node@20.8.7)
-  vite-plugin-ssr:
-    specifier: 0.4.142
-    version: 0.4.142(vite@4.5.0)
   zod:
     specifier: 3.22.4
     version: 3.22.4
@@ -3600,30 +3600,8 @@ packages:
     engines: {node: '>= 0.8'}
     dev: false
 
-  /vite-node@0.34.6(@types/node@20.8.7):
-    resolution: {integrity: sha512-nlBMJ9x6n7/Amaz6F3zJ97EBwR2FkzhBRxF5e+jE6LA3yi6Wtc2lyTij1OnDMIr34v5g/tVQtsVAzhT0jc5ygA==}
-    engines: {node: '>=v14.18.0'}
-    hasBin: true
-    dependencies:
-      cac: 6.7.14
-      debug: 4.3.4
-      mlly: 1.4.2
-      pathe: 1.1.1
-      picocolors: 1.0.0
-      vite: 4.5.0(@types/node@20.8.7)
-    transitivePeerDependencies:
-      - '@types/node'
-      - less
-      - lightningcss
-      - sass
-      - stylus
-      - sugarss
-      - supports-color
-      - terser
-    dev: true
-
-  /vite-plugin-ssr@0.4.142(vite@4.5.0):
-    resolution: {integrity: sha512-ZDgpocnTEUmhYxGgMah8ZNK1Sfy5CFVcdXu+Ll3zRtGIPyWT5vYvASs2BLYEneqantHpde2b31Khzb0hxmP62w==}
+  /vike@0.4.143(vite@4.5.0):
+    resolution: {integrity: sha512-l0IA1x4reGa7+y8Q1rIQgx2Z4aYT+wDGJmAa+myX5N2kzd8wQNzF1hs3PXtgtkcH0YK6Ondr+LU84WzD9VfbLw==}
     engines: {node: '>=16.0.0'}
     hasBin: true
     peerDependencies:
@@ -3647,6 +3625,28 @@ packages:
       source-map-support: 0.5.21
       vite: 4.5.0(@types/node@20.8.7)
     dev: false
+
+  /vite-node@0.34.6(@types/node@20.8.7):
+    resolution: {integrity: sha512-nlBMJ9x6n7/Amaz6F3zJ97EBwR2FkzhBRxF5e+jE6LA3yi6Wtc2lyTij1OnDMIr34v5g/tVQtsVAzhT0jc5ygA==}
+    engines: {node: '>=v14.18.0'}
+    hasBin: true
+    dependencies:
+      cac: 6.7.14
+      debug: 4.3.4
+      mlly: 1.4.2
+      pathe: 1.1.1
+      picocolors: 1.0.0
+      vite: 4.5.0(@types/node@20.8.7)
+    transitivePeerDependencies:
+      - '@types/node'
+      - less
+      - lightningcss
+      - sass
+      - stylus
+      - sugarss
+      - supports-color
+      - terser
+    dev: true
 
   /vite@4.5.0(@types/node@20.8.7):
     resolution: {integrity: sha512-ulr8rNLA6rkyFAlVWw2q5YJ91v098AFQ2R0PRFwPzREXOUJQPtFUG0t+/ZikhaOCDqFoDhN6/v8Sq0o4araFAw==}

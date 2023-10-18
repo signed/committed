@@ -30,7 +30,7 @@
     "simple-git": "3.20.0",
     "sirv": "2.0.3",
     "vite": "4.5.0",
-    "vite-plugin-ssr": "0.4.142",
+    "vike": "0.4.143",
     "zod": "3.22.4"
   },
   "devDependencies": {

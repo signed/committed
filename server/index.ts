@@ -1,13 +1,13 @@
-// This file isn't processed by Vite, see https://github.com/brillout/vite-plugin-ssr/issues/562
+// This file isn't processed by Vite, see https://github.com/vikejs/vike/issues/562
 // Consequently:
 //  - When changing this file, you needed to manually restart your server for your changes to take effect.
-//  - To use your environment variables defined in your .env files, you need to install dotenv, see https://vite-plugin-ssr.com/env
-//  - To use your path aliases defined in your vite.config.js, you need to tell Node.js about them, see https://vite-plugin-ssr.com/path-aliases
+//  - To use your environment variables defined in your .env files, you need to install dotenv, see https://vike.dev/env
+//  - To use your path aliases defined in your vite.config.js, you need to tell Node.js about them, see https://vike.dev/path-aliases
 
 import 'dotenv/config'
 import express from 'express'
 import compression from 'compression'
-import { renderPage } from 'vite-plugin-ssr/server'
+import { renderPage } from 'vike/server'
 import { root } from './root.js'
 import { loadConfigurationFrom } from './configuration'
 import * as fs from 'node:fs'
@@ -71,7 +71,7 @@ async function startServer() {
   // Other middlewares (e.g. some RPC middleware such as Telefunc)
   // ...
 
-  // Vite-plugin-ssr middleware. It should always be our last middleware (because it's a
+  // vike middleware. It should always be our last middleware (because it's a
   // catch-all middleware superseding any middleware placed after it).
   app.get('*', async (req, res, next) => {
     const pageContextInit = {
@@ -88,7 +88,7 @@ async function startServer() {
     if (res.writeEarlyHints) res.writeEarlyHints({ link: earlyHints.map((e) => e.earlyHintLink) })
     headers.forEach(([name, value]) => res.setHeader(name, value))
     res.status(statusCode)
-    // For HTTP streams use httpResponse.pipe() instead, see https://vite-plugin-ssr.com/stream
+    // For HTTP streams use httpResponse.pipe() instead, see https://vike.dev/stream
     res.send(body)
   })
 

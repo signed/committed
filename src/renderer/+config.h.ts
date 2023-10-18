@@ -1,4 +1,4 @@
-// See https://vite-plugin-ssr.com/config
+// See https://vike.dev/config
 export default {
   passToClient: ['pageProps', 'urlPathname'],
 }
