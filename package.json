@@ -2,7 +2,7 @@
   "name": "ts-starter",
   "version": "1.0.0",
   "description": "Basic typescript setup for tdd",
-  "packageManager": "pnpm@8.9.2",
+  "packageManager": "pnpm@9.12.2",
   "private": true,
   "type": "module",
   "scripts": {
