@@ -1,5 +1,5 @@
-import { TicketIdentifierToDetails } from './ExtractReferencedTicketUrls'
-import { authorsByCommits } from '../../commits'
+import { TicketIdentifierToDetails } from '../../core/ExtractReferencedTicketUrls'
+import { authorsByCommits } from '../../core/commits'
 import { useAbstractToDetail } from '../../AbstractToDetails/abstract-to-details-hook'
 
 export function TicketDetailsView(props: { ticketIdentifierToDetails: TicketIdentifierToDetails }) {

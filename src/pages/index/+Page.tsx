@@ -5,7 +5,7 @@ import '../../AbstractToDetails/AbstractToDetails.css'
 import { AbstractToDetail } from '../../AbstractToDetails/abstract-to-detail'
 import { TicketSummaryView } from './TicketSummaryView'
 import { TicketDetailsView } from './TicketDetailsView'
-import { timeSpanOver } from '../../commits'
+import { timeSpanOver } from '../../core/commits'
 import { Task } from '../../core/ReleaseTasks'
 
 export type PageProperties = {

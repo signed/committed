@@ -1,4 +1,4 @@
-import { Author, Commit, CommitsContainer, TicketIdentifierToDetails } from './pages/index/ExtractReferencedTicketUrls'
+import { Author, Commit, CommitsContainer, TicketIdentifierToDetails } from './ExtractReferencedTicketUrls'
 
 export type AuthorWithCommitCount = { name: Author; count: number }
 

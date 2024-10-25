@@ -1,7 +1,7 @@
 import 'dotenv/config'
 
 import { loadConfigurationFrom } from '../server/configuration'
-import { extractReferencedTicketUrls } from './pages/index/ExtractReferencedTicketUrls'
+import { extractReferencedTicketUrls } from './core/ExtractReferencedTicketUrls'
 
 const configuration = loadConfigurationFrom(process.env)
 if (configuration === 'failed') {

@@ -1,4 +1,4 @@
-import { CommitsContainer } from './ExtractReferencedTicketUrls'
+import { CommitsContainer } from '../../core/ExtractReferencedTicketUrls'
 
 import { ExternalLink } from './ExternalLink'
 import { useAbstractToDetail } from '../../AbstractToDetails/abstract-to-details-hook'

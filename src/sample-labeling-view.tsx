@@ -1,7 +1,7 @@
 import { type CSSProperties } from 'react'
 import { CommitRange } from './core/project'
 import { GitRangeView } from './git-range-view'
-import { type TimeSpan } from './commits'
+import { type TimeSpan } from './core/commits'
 import { fullDaysBetween } from './core/dates'
 
 export type SampleLabelingViewProps = {
