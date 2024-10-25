@@ -5,7 +5,7 @@ import { deriveReleaseTasks } from '../../core/ReleaseTasks'
 
 async function onBeforeRender(context: PageContextServer) {
   const ticketIdentifierToDetails = await extractReferencedTicketUrls(context.configuration)
-  const releaseTasks = deriveReleaseTasks(ticketIdentifierToDetails)
+  const releaseTasks = deriveReleaseTasks(ticketIdentifierToDetails, context.configuration.release)
   const repository = context.configuration.repository
   const pageProps: PageProperties = {
     ticketIdentifierToDetails,

@@ -8,14 +8,21 @@ export type GitRepositoryConfiguration = {
   to: Treeish
 }
 
-export type Configuration = {
-  repository: GitRepositoryConfiguration
-  ticketing: TicketingConfiguration
-}
-
 export type TicketingConfiguration = {
   project: string
   url: string
+}
+
+export type ReleaseTaskName = string & { __brand: 'ReleaseTaskName' }
+
+export type ReleaseConfiguration = {
+  tasks: ReleaseTaskName[]
+}
+
+export type Configuration = {
+  repository: GitRepositoryConfiguration
+  ticketing: TicketingConfiguration
+  release: ReleaseConfiguration
 }
 
 export const loadConfigurationFrom = (env: NodeJS.ProcessEnv): Configuration | 'failed' => {
@@ -24,10 +31,23 @@ export const loadConfigurationFrom = (env: NodeJS.ProcessEnv): Configuration | '
   const to = env['TO']
   const project = env['PROJECT']
   const url = env['TICKET_URL']
+  const releaseTasksString = env['RELEASE_TASKS']
 
-  if (from === undefined || to === undefined || project === undefined || url === undefined) {
+  if (
+    from === undefined ||
+    to === undefined ||
+    project === undefined ||
+    url === undefined ||
+    releaseTasksString === undefined
+  ) {
     return 'failed'
   }
+
+  function parseReleaseTaskNames(releaseTasksString: string) {
+    return releaseTasksString.split('|') as ReleaseTaskName[]
+  }
+
+  const releaseTasks = parseReleaseTaskNames(releaseTasksString)
 
   return {
     repository: {
@@ -38,6 +58,9 @@ export const loadConfigurationFrom = (env: NodeJS.ProcessEnv): Configuration | '
     ticketing: {
       project,
       url,
+    },
+    release: {
+      tasks: releaseTasks,
     },
   }
 }

@@ -1,4 +1,5 @@
 import { CommitsContainer, NoTicket, type Ticket, TicketIdentifier } from './ExtractReferencedTicketUrls'
+import { ReleaseConfiguration, ReleaseTaskName } from '../../server/configuration'
 
 export type TaskStatus = 'todo' | 'in progress' | 'done'
 
@@ -18,8 +19,8 @@ export type TestTask = {
 
 export type Task = GenericTask | TestTask
 
-export const deriveReleaseTasks = (ticketIdentifierToDetails: Map<TicketIdentifier, CommitsContainer>): Task[] => {
-  const testTasks = Array.from(ticketIdentifierToDetails.entries()).map(([_, v]) => {
+const testTasksFrom = (ticketIdentifierToDetails: Map<TicketIdentifier, CommitsContainer>): TestTask[] =>
+  Array.from(ticketIdentifierToDetails.entries()).map(([_, v]) => {
     return {
       type: 'test',
       required: true,
@@ -28,10 +29,23 @@ export const deriveReleaseTasks = (ticketIdentifierToDetails: Map<TicketIdentifi
       tester: v.commits.map((commit) => commit.author),
     } satisfies TestTask
   })
-  return [
-    { type: 'generic', status: 'done', name: 'build artifact' },
-    { type: 'generic', status: 'in progress', name: 'deploy staging' },
-    ...testTasks,
-    { type: 'generic', status: 'todo', name: 'deploy production' },
-  ]
+
+const getGenericTasks = (taskName: ReleaseTaskName): Task[] => [
+  {
+    type: 'generic',
+    status: 'todo',
+    name: taskName,
+  },
+]
+
+export const deriveReleaseTasks = (
+  ticketIdentifierToDetails: Map<TicketIdentifier, CommitsContainer>,
+  releaseConfiguration: ReleaseConfiguration,
+): Task[] => {
+  return releaseConfiguration.tasks.flatMap((taskName) => {
+    if (taskName === 'test') {
+      return testTasksFrom(ticketIdentifierToDetails)
+    }
+    return getGenericTasks(taskName)
+  })
 }
