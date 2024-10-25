@@ -50,11 +50,12 @@ export const extractReferencedTicketUrls = async (configuration: Configuration):
   commits.forEach((commit: Commit) => {
     const ticketIdentifiers = extractTicketReferencesFrom(commit.subject, configuration.ticketing.project)
     if (ticketIdentifiers.length === 0) {
-      let details = ticketToCommits.get('no-ticket')
+      const NoTicketKey = 'no ticket'
+      let details = ticketToCommits.get(NoTicketKey)
       if (details === undefined) {
         const noTicket = { kind: 'no-ticket', identifier: 'no ticket' } satisfies NoTicket
         details = { ticket: noTicket, commits: [] }
-        ticketToCommits.set('no ticket', details)
+        ticketToCommits.set(NoTicketKey, details)
       }
       details.commits.push(commit)
     }
