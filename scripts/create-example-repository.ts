@@ -1,6 +1,6 @@
 import 'dotenv/config'
 import { loadConfigurationFrom } from '../server/configuration'
-import { appendFileSync, lstatSync, mkdirSync, writeFileSync } from 'node:fs'
+import { appendFileSync, lstatSync, mkdirSync, rmSync, writeFileSync } from 'node:fs'
 import { resolve } from 'node:path'
 import { simpleGit, type SimpleGitOptions } from 'simple-git'
 import { generate } from 'random-words'
@@ -21,7 +21,7 @@ async function setupSampleGitRepository() {
   }
   const directory = configuration.repository.baseDirectory
   // comment out after testing is done
-  // rmSync(directory, { recursive: true })
+  rmSync(directory, { recursive: true })
 
   if (directoryExists(directory)) {
     console.log(`directory already exists at ${directory}`)
@@ -58,8 +58,11 @@ async function setupSampleGitRepository() {
   await git.branch(['release', initial])
   await commit('Two', '5')
   await commitWithoutTicket('Lazy')
+  await commitWithoutTicket('Lazy')
+  await commit('Three', '7')
   await commit('Three', '7')
   await commitWithoutTicket('Cowboy')
+  await commitWithoutTicket('Lazy')
   await commit('Four', '1')
   await commitWithoutTicket('Forgetful')
 

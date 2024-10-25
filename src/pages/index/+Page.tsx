@@ -34,7 +34,7 @@ const ticketToString = (ticket: Ticket | NoTicket) => {
 }
 
 function testersToString(testers: string[]) {
-  return testers.join(', ')
+  return [...new Set(testers)].join(', ')
 }
 
 const produceMessage = (releaseTasks: Task[]) => {
