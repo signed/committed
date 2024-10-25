@@ -17,7 +17,7 @@
     "clean": "rimraf ./dist",
     "format": "prettier --write .",
     "execute": "tsx src/index.ts",
-    "nit-pick": "pnpm format && pnpm lint && pnpm test && pnpm typecheck",
+    "nitpick": "pnpm format && pnpm lint && pnpm test && pnpm typecheck",
     "demo-repo": "tsx ./scripts/create-example-repository.ts"
   },
   "dependencies": {
