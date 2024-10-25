@@ -13,7 +13,7 @@ function directoryExists(filePath: string) {
   }
 }
 
-async function setup() {
+async function setupSampleGitRepository() {
   const configuration = loadConfigurationFrom(process.env)
   if (configuration === 'failed') {
     console.error('missing configuration')
@@ -37,24 +37,36 @@ async function setup() {
   const absolutePath = resolve(directory, fileName)
   writeFileSync(absolutePath, '# The Content\n\n')
 
-  async function commit(author: string, ticket: string) {
+  async function appendCommit(author: string, generateTicketIdentifier: (project: string) => string) {
     appendFileSync(absolutePath, '- ' + author + '\n')
     const commitMessage = generate({ min: 2, max: 7, join: ' ' })
-    const commitResult = await git.add('./*').commit(`${project}-${ticket} ${commitMessage}`, {
+    const commitResult = await git.add('./*').commit(`${generateTicketIdentifier(project)} ${commitMessage}`, {
       '--author': `"${author} Person <${author.toLowerCase()}@example.org>"`,
     })
     return commitResult.commit
   }
 
+  async function commit(author: string, ticket: string) {
+    return await appendCommit(author, (project: string) => `${project}-${ticket}`)
+  }
+
+  async function commitWithoutTicket(author: string) {
+    return await appendCommit(author, () => ``)
+  }
+
   const initial = await commit('One', '5')
   await git.branch(['release', initial])
   await commit('Two', '5')
+  await commitWithoutTicket('Lazy')
   await commit('Three', '7')
+  await commitWithoutTicket('Cowboy')
   await commit('Four', '1')
+  await commitWithoutTicket('Forgetful')
 
   console.log(`done at ${directory}`)
+  console.log(`put the next two lines into your .env file`)
   console.log([`FROM=${initial}`, 'TO=main'].join('\n'))
 }
 
 //@ts-expect-error running on node 20 where this is supported but still have to figure out tsconfig setup
-await setup()
+await setupSampleGitRepository()
