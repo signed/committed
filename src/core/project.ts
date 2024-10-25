@@ -1,4 +1,4 @@
-import { TicketIdentifier } from './pages/index/ExtractReferencedTicketUrls'
+import { TicketIdentifier } from './ExtractReferencedTicketUrls'
 
 export type Treeish = string
 export type CommitRange = {

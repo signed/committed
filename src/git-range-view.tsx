@@ -1,5 +1,5 @@
 import './code.css'
-import { CommitRange } from './project'
+import { CommitRange } from './core/project'
 
 export type GitRangeViewProps = { range: CommitRange }
 
