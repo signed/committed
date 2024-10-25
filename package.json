@@ -1,7 +1,7 @@
 {
-  "name": "ts-starter",
+  "name": "committed",
   "version": "1.0.0",
-  "description": "Basic typescript setup for tdd",
+  "description": "Identify the tickets mentioned in commit messages since the last release",
   "packageManager": "pnpm@9.12.2",
   "private": true,
   "type": "module",
