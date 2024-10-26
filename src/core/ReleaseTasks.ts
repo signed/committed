@@ -19,16 +19,19 @@ export type TestTask = {
 
 export type Task = GenericTask | TestTask
 
-const testTasksFrom = (ticketIdentifierToDetails: Map<TicketIdentifier, CommitsContainer>): TestTask[] =>
-  Array.from(ticketIdentifierToDetails.entries()).map(([_, v]) => {
+const testTasksFrom = (ticketIdentifierToDetails: Map<TicketIdentifier, CommitsContainer>): TestTask[] => {
+  return Array.from(ticketIdentifierToDetails.entries()).map(([_, v]) => {
+    const authors = v.commits.map((commit) => commit.author)
+    const tester = [...new Set(authors)]
     return {
       type: 'test',
       required: true,
       status: 'todo',
       ticket: v.ticket,
-      tester: v.commits.map((commit) => commit.author),
+      tester,
     } satisfies TestTask
   })
+}
 
 const getGenericTasks = (taskName: ReleaseTaskName): Task[] => [
   {
