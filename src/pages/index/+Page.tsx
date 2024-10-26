@@ -6,7 +6,7 @@ import { AbstractToDetail } from '../../AbstractToDetails/abstract-to-detail'
 import { TicketSummaryView } from './TicketSummaryView'
 import { TicketDetailsView } from './TicketDetailsView'
 import { timeSpanOver } from '../../core/commits'
-import { Task } from '../../core/ReleaseTasks'
+import { Status, Task, TestTask, TicketTest } from '../../core/ReleaseTasks'
 
 export type PageProperties = {
   ticketIdentifierToDetails: TicketIdentifierToDetails
@@ -15,8 +15,8 @@ export type PageProperties = {
   releaseTasks: Task[]
 }
 
-const statusToEmote = (status: Task) => {
-  switch (status.status) {
+const statusToEmote = (status: Status) => {
+  switch (status) {
     case 'todo':
       return '⏳'
     case 'in progress':
@@ -37,18 +37,42 @@ function testersToString(testers: string[]) {
   return testers.join(', ')
 }
 
+const overallTestStatus = (ticketTests: TicketTest[]): Status => {
+  const atLeastOneInProgress = ticketTests.some((test) => test.status === 'in progress')
+  if (atLeastOneInProgress) {
+    return 'in progress'
+  }
+  const allTodo = ticketTests.every((test) => test.status === 'todo')
+  if (allTodo) {
+    return 'todo'
+  }
+  return 'done'
+}
+
+function deriveTestLinesFrom(testTask: TestTask): string[] {
+  const ticketTests = testTask.ticketTests
+  const status = overallTestStatus(ticketTests)
+
+  return [
+    `${statusToEmote(status)} Test`,
+    ...ticketTests.map((test) => {
+      return `-${statusToEmote(test.status)} ${ticketToString(test.ticket)} ${testersToString(test.tester)}`
+    }),
+  ]
+}
+
 const produceMessage = (releaseTasks: Task[]) => {
-  return releaseTasks
-    .map((task) => {
-      const type = task.type
-      switch (type) {
-        case 'generic':
-          return `${statusToEmote(task)} ${task.name}`
-        case 'test':
-          return `-${statusToEmote(task)} ${ticketToString(task.ticket)} ${testersToString(task.tester)}`
-      }
-    })
-    .join('\n')
+  const lines = releaseTasks.flatMap((task) => {
+    const type = task.type
+    switch (type) {
+      case 'generic':
+        return `${statusToEmote(task.status)} ${task.name}`
+      case 'test':
+        return deriveTestLinesFrom(task)
+    }
+  })
+  const message = lines.join('\n')
+  return { message, lineCount: lines.length }
 }
 
 function Page(props: PageProperties) {
@@ -61,7 +85,7 @@ function Page(props: PageProperties) {
     return <div>nothing to display</div>
   }
 
-  const message = produceMessage(props.releaseTasks)
+  const { message, lineCount } = produceMessage(props.releaseTasks)
   return (
     <>
       <SampleLabelingView project={props.project} range={props.range} timeSpan={timeSpan}></SampleLabelingView>
@@ -77,7 +101,7 @@ function Page(props: PageProperties) {
         </AbstractToDetail.Detail>
       </AbstractToDetail>
 
-      <textarea rows={props.releaseTasks.length + 3} cols={80} defaultValue={message} />
+      <textarea rows={lineCount + 3} cols={80} defaultValue={message} />
     </>
   )
 }

@@ -1,36 +1,45 @@
 import { CommitsContainer, NoTicket, type Ticket, TicketIdentifier } from './ExtractReferencedTicketUrls'
 import { ReleaseConfiguration, ReleaseTaskName } from '../../server/configuration'
 
-export type TaskStatus = 'todo' | 'in progress' | 'done'
+export type Status = 'todo' | 'in progress' | 'done'
 
 export type GenericTask = {
   type: 'generic'
-  status: TaskStatus
+  status: Status
   name: string
 }
 
-export type TestTask = {
-  type: 'test'
+export type TicketTest = {
   required: boolean
-  status: TaskStatus
+  status: Status
   ticket: Ticket | NoTicket
   tester: string[]
 }
 
+export type TestTask = {
+  type: 'test'
+  ticketTests: TicketTest[]
+}
+
 export type Task = GenericTask | TestTask
 
-const testTasksFrom = (ticketIdentifierToDetails: Map<TicketIdentifier, CommitsContainer>): TestTask[] => {
-  return Array.from(ticketIdentifierToDetails.entries()).map(([_, v]) => {
-    const authors = v.commits.map((commit) => commit.author)
-    const tester = [...new Set(authors)]
-    return {
-      type: 'test',
-      required: true,
-      status: 'todo',
-      ticket: v.ticket,
-      tester,
-    } satisfies TestTask
-  })
+const deriveTicketTestFor = (container: CommitsContainer): TicketTest => {
+  const authors = container.commits.map((commit) => commit.author)
+  const tester = [...new Set(authors)]
+  return {
+    required: true,
+    status: 'todo',
+    ticket: container.ticket,
+    tester,
+  }
+}
+
+const testTasksFrom = (ticketIdentifierToDetails: Map<TicketIdentifier, CommitsContainer>): TestTask => {
+  const ticketTests = Array.from(ticketIdentifierToDetails.values()).map(deriveTicketTestFor)
+  return {
+    type: 'test',
+    ticketTests,
+  }
 }
 
 const getGenericTasks = (taskName: ReleaseTaskName): Task[] => [
