@@ -1,24 +1,27 @@
-import { genericTaskSummary, Task, testTaskSummary } from '../../core/ReleaseTasks'
+import { genericTaskSummary, Task, testTaskSummary, ticketTestSummary } from '../../core/ReleaseTasks'
 
 export type TaskSectionProperties = {
   tasks: Task[]
 }
 
-function summaryFor(task: Task): string {
+function summaryFor(task: Task) {
   switch (task.type) {
     case 'test':
-      return testTaskSummary(task)
+      return (
+        <li key={'test'}>
+          {testTaskSummary(task)}
+          <ul>
+            {task.ticketTests.map((t) => (
+              <li key={t.ticket.identifier}>{ticketTestSummary(t)}</li>
+            ))}
+          </ul>
+        </li>
+      )
     case 'generic':
-      return genericTaskSummary(task)
+      return <li key={task.name}>{genericTaskSummary(task)}</li>
   }
 }
 
 export const TaskSection = (_props: TaskSectionProperties) => {
-  return (
-    <ol>
-      {_props.tasks.map((task) => (
-        <li key={'k'}>{summaryFor(task)}</li>
-      ))}
-    </ol>
-  )
+  return <ol>{_props.tasks.map((task) => summaryFor(task))}</ol>
 }
