@@ -106,8 +106,8 @@ export function ticketTestSummary(ticketTest: TicketTest) {
   return `${statusToEmote(ticketTest.status)} ${ticketToString(ticketTest.ticket)} ${testersToString(ticketTest.tester)}`
 }
 
-function deriveTestLinesFrom(testTask: TestTask): string[] {
-  return [testTaskSummary(testTask), ...testTask.ticketTests.map((test) => `-${ticketTestSummary(test)}`)]
+export function genericTaskSummary(task: GenericTask) {
+  return `${statusToEmote(task.status)} ${task.name}`
 }
 
 export const produceMessage = (releaseTasks: Task[]) => {
@@ -115,11 +115,15 @@ export const produceMessage = (releaseTasks: Task[]) => {
     const type = task.type
     switch (type) {
       case 'generic':
-        return `${statusToEmote(task.status)} ${task.name}`
+        return genericTaskSummary(task)
       case 'test':
         return deriveTestLinesFrom(task)
     }
   })
   const message = lines.join('\n')
   return { message, lineCount: lines.length }
+}
+
+function deriveTestLinesFrom(testTask: TestTask): string[] {
+  return [testTaskSummary(testTask), ...testTask.ticketTests.map((test) => `-${ticketTestSummary(test)}`)]
 }
