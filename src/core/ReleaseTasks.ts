@@ -74,3 +74,14 @@ export const overallTestStatus = (testTask: TestTask): Status => {
   }
   return 'done'
 }
+
+export const statusToEmote = (status: Status) => {
+  switch (status) {
+    case 'todo':
+      return '⏳'
+    case 'in progress':
+      return '▶️'
+    case 'done':
+      return '✅'
+  }
+}

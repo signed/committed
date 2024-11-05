@@ -3,7 +3,7 @@ import { SampleLabelingView } from '../../sample-labeling-view'
 import { CommitRange } from '../../core/project'
 import '../../AbstractToDetails/AbstractToDetails.css'
 import { timeSpanOver } from '../../core/commits'
-import { overallTestStatus, Status, Task, TestTask } from '../../core/ReleaseTasks'
+import { overallTestStatus, statusToEmote, Task, TestTask } from '../../core/ReleaseTasks'
 import { TaskSection } from './TaskSection'
 import { ReferencedTickets } from './ReferencedTickets'
 
@@ -12,17 +12,6 @@ export type PageProperties = {
   project: string
   range: CommitRange
   releaseTasks: Task[]
-}
-
-const statusToEmote = (status: Status) => {
-  switch (status) {
-    case 'todo':
-      return '⏳'
-    case 'in progress':
-      return '▶️'
-    case 'done':
-      return '✅'
-  }
 }
 
 const ticketToString = (ticket: Ticket | NoTicket) => {
