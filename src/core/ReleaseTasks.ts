@@ -61,3 +61,16 @@ export const deriveReleaseTasks = (
     return getGenericTasks(taskName)
   })
 }
+
+export const overallTestStatus = (testTask: TestTask): Status => {
+  const ticketTests = testTask.ticketTests
+  const atLeastOneInProgress = ticketTests.some((test) => test.status === 'in progress')
+  if (atLeastOneInProgress) {
+    return 'in progress'
+  }
+  const allTodo = ticketTests.every((test) => test.status === 'todo')
+  if (allTodo) {
+    return 'todo'
+  }
+  return 'done'
+}

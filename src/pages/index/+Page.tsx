@@ -3,7 +3,7 @@ import { SampleLabelingView } from '../../sample-labeling-view'
 import { CommitRange } from '../../core/project'
 import '../../AbstractToDetails/AbstractToDetails.css'
 import { timeSpanOver } from '../../core/commits'
-import { Status, Task, TestTask, TicketTest } from '../../core/ReleaseTasks'
+import { overallTestStatus, Status, Task, TestTask } from '../../core/ReleaseTasks'
 import { TaskSection } from './TaskSection'
 import { ReferencedTickets } from './ReferencedTickets'
 
@@ -36,25 +36,12 @@ function testersToString(testers: string[]) {
   return testers.join(', ')
 }
 
-const overallTestStatus = (ticketTests: TicketTest[]): Status => {
-  const atLeastOneInProgress = ticketTests.some((test) => test.status === 'in progress')
-  if (atLeastOneInProgress) {
-    return 'in progress'
-  }
-  const allTodo = ticketTests.every((test) => test.status === 'todo')
-  if (allTodo) {
-    return 'todo'
-  }
-  return 'done'
-}
-
 function deriveTestLinesFrom(testTask: TestTask): string[] {
-  const ticketTests = testTask.ticketTests
-  const status = overallTestStatus(ticketTests)
+  const status = overallTestStatus(testTask)
 
   return [
     `${statusToEmote(status)} Test`,
-    ...ticketTests.map((test) => {
+    ...testTask.ticketTests.map((test) => {
       return `-${statusToEmote(test.status)} ${ticketToString(test.ticket)} ${testersToString(test.tester)}`
     }),
   ]
