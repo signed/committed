@@ -18,6 +18,7 @@ export type TicketTest = {
 
 export type TestTask = {
   type: 'test'
+  name: 'Test'
   ticketTests: TicketTest[]
 }
 
@@ -38,6 +39,7 @@ const testTasksFrom = (ticketIdentifierToDetails: Map<TicketIdentifier, CommitsC
   const ticketTests = Array.from(ticketIdentifierToDetails.values()).map(deriveTicketTestFor)
   return {
     type: 'test',
+    name: 'Test',
     ticketTests,
   }
 }

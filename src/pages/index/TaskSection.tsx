@@ -11,24 +11,20 @@ export const TaskSection = (_props: TaskSectionProperties) => {
   return (
     <>
       <StatusToggle status={'todo'} onChange={(status: Status) => console.log(status)} />
-      <ol>{_props.tasks.map((task) => summaryFor(task))}</ol>
+      <ol>
+        {_props.tasks.map((task) => {
+          return <li key={task.name}>{editorFor(task)}</li>
+        })}
+      </ol>
     </>
   )
 }
 
-function summaryFor(task: Task) {
+function editorFor(task: Task) {
   switch (task.type) {
     case 'generic':
-      return (
-        <li key={task.name}>
-          <GenericTaskEditor task={task}></GenericTaskEditor>
-        </li>
-      )
+      return <GenericTaskEditor task={task} />
     case 'test':
-      return (
-        <li key={'test'}>
-          <TestTaskEditor task={task}></TestTaskEditor>
-        </li>
-      )
+      return <TestTaskEditor task={task} />
   }
 }
