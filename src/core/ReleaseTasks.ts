@@ -127,3 +127,14 @@ export const produceMessage = (releaseTasks: Task[]) => {
 function deriveTestLinesFrom(testTask: TestTask): string[] {
   return [testTaskSummary(testTask), ...testTask.ticketTests.map((test) => `-${ticketTestSummary(test)}`)]
 }
+
+export function transitionToNextStatus(status: Status) {
+  switch (status) {
+    case 'todo':
+      return 'in progress'
+    case 'in progress':
+      return 'done'
+    case 'done':
+      return 'todo'
+  }
+}
