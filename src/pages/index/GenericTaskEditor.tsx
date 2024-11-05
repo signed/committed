@@ -1,9 +1,16 @@
-import { GenericTask, genericTaskSummary } from '../../core/ReleaseTasks'
+import { GenericTask } from '../../core/ReleaseTasks'
+import { StatusToggle } from './StatusToggle'
 
 type GenericTaskEditorProperties = {
   task: GenericTask
 }
 
 export function GenericTaskEditor(props: GenericTaskEditorProperties) {
-  return genericTaskSummary(props.task)
+  const task = props.task
+  return (
+    <>
+      <StatusToggle status={task.status} />
+      {task.name}
+    </>
+  )
 }

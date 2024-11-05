@@ -88,14 +88,14 @@ export const statusToEmote = (status: Status) => {
   }
 }
 
-const ticketToString = (ticket: Ticket | NoTicket) => {
+export const ticketToString = (ticket: Ticket | NoTicket) => {
   if (ticket.kind === 'no-ticket') {
     return '[no ticket]'
   }
   return ticket.url
 }
 
-function testersToString(testers: string[]) {
+export function testersToString(testers: string[]) {
   return testers.join(', ')
 }
 
