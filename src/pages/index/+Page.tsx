@@ -2,11 +2,10 @@ import { NoTicket, type Ticket, TicketIdentifierToDetails } from '../../core/Ext
 import { SampleLabelingView } from '../../sample-labeling-view'
 import { CommitRange } from '../../core/project'
 import '../../AbstractToDetails/AbstractToDetails.css'
-import { AbstractToDetail } from '../../AbstractToDetails/abstract-to-detail'
-import { TicketSummaryView } from './TicketSummaryView'
-import { TicketDetailsView } from './TicketDetailsView'
 import { timeSpanOver } from '../../core/commits'
 import { Status, Task, TestTask, TicketTest } from '../../core/ReleaseTasks'
+import { TaskSection } from './TaskSection'
+import { ReferencedTickets } from './ReferencedTickets'
 
 export type PageProperties = {
   ticketIdentifierToDetails: TicketIdentifierToDetails
@@ -80,28 +79,15 @@ function Page(props: PageProperties) {
   if (timeSpan === undefined) {
     return null
   }
-  const first = Array.from(props.ticketIdentifierToDetails.keys())[0]
-  if (first === undefined) {
-    return <div>nothing to display</div>
-  }
-
   const { message, lineCount } = produceMessage(props.releaseTasks)
   return (
     <>
       <SampleLabelingView project={props.project} range={props.range} timeSpan={timeSpan}></SampleLabelingView>
-      <h1>Referenced Tickets</h1>
-      <AbstractToDetail initial={first}>
-        <AbstractToDetail.Abstract>
-          {Array.from(props.ticketIdentifierToDetails).map(([ticketIdentifier, details]) => {
-            return <TicketSummaryView key={ticketIdentifier} className="abstractitem" ticketDetails={details} />
-          })}
-        </AbstractToDetail.Abstract>
-        <AbstractToDetail.Detail>
-          <TicketDetailsView ticketIdentifierToDetails={props.ticketIdentifierToDetails} />
-        </AbstractToDetail.Detail>
-      </AbstractToDetail>
-
+      <h1>Release Tasks</h1>
       <textarea rows={lineCount + 3} cols={80} defaultValue={message} />
+      <TaskSection tasks={props.releaseTasks} />
+      <h1>Referenced Tickets</h1>
+      <ReferencedTickets ticketIdentifierToDetails={props.ticketIdentifierToDetails}></ReferencedTickets>
     </>
   )
 }
