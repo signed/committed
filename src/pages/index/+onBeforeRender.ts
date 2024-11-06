@@ -5,7 +5,11 @@ import { deriveReleaseTasks } from '../../core/ReleaseTasks'
 
 const loadPageProperties = async (context: PageContextServer) => {
   const ticketIdentifierToDetails = await extractReferencedTicketUrls(context.configuration)
-  const releaseTasks = deriveReleaseTasks(ticketIdentifierToDetails, context.configuration.release)
+  let releaseTasks = await context.taskStorage.loadTasks()
+  if (releaseTasks === 'empty') {
+    releaseTasks = deriveReleaseTasks(ticketIdentifierToDetails, context.configuration.release)
+    await context.taskStorage.storeTasks(releaseTasks)
+  }
   const repository = context.configuration.repository
   const range = {
     from: repository.from,
