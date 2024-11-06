@@ -3,19 +3,25 @@ import { extractReferencedTicketUrls } from '../../core/ExtractReferencedTicketU
 import type { PageProperties } from './+Page'
 import { deriveReleaseTasks } from '../../core/ReleaseTasks'
 
-async function onBeforeRender(context: PageContextServer) {
+const loadPageProperties = async (context: PageContextServer) => {
   const ticketIdentifierToDetails = await extractReferencedTicketUrls(context.configuration)
   const releaseTasks = deriveReleaseTasks(ticketIdentifierToDetails, context.configuration.release)
   const repository = context.configuration.repository
-  const pageProps: PageProperties = {
-    ticketIdentifierToDetails,
-    project: context.project,
-    range: {
-      from: repository.from,
-      to: repository.to,
-    },
-    releaseTasks,
+  const range = {
+    from: repository.from,
+    to: repository.to,
   }
+  const project = context.project
+  return {
+    ticketIdentifierToDetails,
+    project,
+    range,
+    releaseTasks,
+  } satisfies PageProperties
+}
+
+async function onBeforeRender(context: PageContextServer) {
+  const pageProps = await loadPageProperties(context)
   return {
     pageContext: {
       pageProps,
