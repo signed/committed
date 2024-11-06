@@ -15,9 +15,11 @@ import { deriveProjectFrom } from './path'
 import * as trpcExpress from '@trpc/server/adapters/express'
 import { appRouter } from './trpc'
 import { createContext } from './trpc/context'
+import { InMemoryTaskStorage } from './InMemoryTaskStorage'
+import { TaskStorage } from '../src/pages/index/TaskStorage'
 
 const isProduction = process.env['NODE_ENV'] === 'production'
-
+const taskStorage: TaskStorage = new InMemoryTaskStorage()
 const configuration = loadConfigurationFrom(process.env)
 if (configuration === 'failed') {
   console.error('missing configuration')
@@ -78,6 +80,7 @@ async function startServer() {
       urlOriginal: req.originalUrl,
       project,
       configuration,
+      taskStorage,
     }
     const pageContext = await renderPage(pageContextInit)
     const { httpResponse } = pageContext
