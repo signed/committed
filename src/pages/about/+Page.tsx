@@ -1,16 +1,7 @@
 import { useEffect, useState } from 'react'
-import { createTRPCProxyClient, httpBatchLink } from '@trpc/client'
 import { Counter } from './Counter'
-import type { AppRouter } from '../../../server/trpc'
 import '../../code.css'
-
-const client = createTRPCProxyClient<AppRouter>({
-  links: [
-    httpBatchLink({
-      url: 'http://localhost:3000/api/trpc',
-    }),
-  ],
-})
+import { client } from '../../../server/trpc/client'
 
 function Page() {
   const [data, setData] = useState('')
