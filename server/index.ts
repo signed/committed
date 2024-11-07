@@ -45,7 +45,7 @@ async function startServer() {
     '/api/trpc',
     trpcExpress.createExpressMiddleware({
       router: appRouter,
-      createContext,
+      createContext: createContext('Golum'),
     }),
   )
 

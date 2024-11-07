@@ -53,7 +53,8 @@ export const appRouter = router({
   message: messageRouter,
   // or individual procedures
   hello: publicProcedure.input(z.string().nullish()).query(({ input, ctx }) => {
-    return `👋hello ${input ?? ctx.user?.name ?? 'world'}`
+    ctx.hello
+    return `👋${ctx.hello} hello ${input ?? ctx.user?.name ?? 'world'}`
   }),
   // or inline a router
   admin: router({
