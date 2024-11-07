@@ -8,20 +8,10 @@ type AdditionalContext = {
 
 export const createContext = (additionalContext: AdditionalContext) => {
   return ({ req, res }: trpcExpress.CreateExpressContextOptions) => {
-    const getUser = () => {
-      if (req.headers.authorization !== 'secret') {
-        return null
-      }
-      return {
-        name: 'alex',
-      }
-    }
-
     return {
       ...additionalContext,
       req,
       res,
-      user: getUser(),
     }
   }
 }
