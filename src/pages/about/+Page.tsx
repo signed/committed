@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Counter } from './Counter'
 import '../../code.css'
-import { client } from '../../../server/trpc/client'
+import { client } from '../../../trpc/client'
 
 function Page() {
   const [data, setData] = useState('')
