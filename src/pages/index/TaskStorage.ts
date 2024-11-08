@@ -8,5 +8,6 @@ export interface TaskStorage {
 
   transitionTaskStatus(taskName: string, status: Status): Promise<void>
 
+  //todo Convert to TicketIdentifier | NoTicketIdentifier
   transitionTicketTest(ticket: Ticket | NoTicket, status: Status): Promise<void>
 }
