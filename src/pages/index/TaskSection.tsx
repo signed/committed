@@ -1,5 +1,4 @@
-import { Status, Task } from '../../core/ReleaseTasks'
-import { StatusToggle } from './StatusToggle'
+import { Task } from '../../core/ReleaseTasks'
 import { TestTaskEditor } from './TestTaskEditor'
 import { GenericTaskEditor } from './GenericTaskEditor'
 
@@ -10,7 +9,6 @@ export type TaskSectionProperties = {
 export const TaskSection = (_props: TaskSectionProperties) => {
   return (
     <>
-      <StatusToggle status={'todo'} onChange={(status: Status) => console.log(status)} />
       <ol>
         {_props.tasks.map((task) => {
           return <li key={task.name}>{editorFor(task)}</li>
