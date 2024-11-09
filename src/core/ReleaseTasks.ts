@@ -1,7 +1,9 @@
 import { CommitsContainer, NoTicket, type Ticket, TicketIdentifier } from './ExtractReferencedTicketUrls'
 import { ReleaseConfiguration, ReleaseTaskName } from '../../server/configuration'
 
-export type Status = 'todo' | 'in progress' | 'done'
+export const StatusValues = ['todo', 'in progress', 'done'] as const
+
+export type Status = (typeof StatusValues)[number]
 
 export type GenericTask = {
   type: 'generic'
@@ -70,11 +72,11 @@ export const overallTestStatus = (testTask: TestTask): Status => {
   if (atLeastOneInProgress) {
     return 'in progress'
   }
-  const allTodo = ticketTests.every((test) => test.status === 'todo')
-  if (allTodo) {
-    return 'todo'
+  const allDone = ticketTests.every((test) => test.status === 'done')
+  if (allDone) {
+    return 'done'
   }
-  return 'done'
+  return 'todo'
 }
 
 export const statusToEmote = (status: Status) => {

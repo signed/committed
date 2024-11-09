@@ -1,6 +1,6 @@
 import * as trpcExpress from '@trpc/server/dist/adapters/express'
 import { inferAsyncReturnType } from '@trpc/server'
-import { TaskStorage } from '../src/pages/index/TaskStorage'
+import { TaskStorage } from '../src/core/TaskStorage'
 
 type AdditionalContext = {
   taskStorage: TaskStorage

@@ -15,7 +15,7 @@ import type {
   PageContextBuiltInClientWithServerRouting as PageContextBuiltInClient,
   //*/
 } from 'vike/types'
-import { TaskStorage } from '../pages/index/TaskStorage'
+import { TaskStorage } from '../core/TaskStorage'
 
 type Page = (pageProps: PageProps) => React.ReactElement
 type PageProps = Record<string, unknown>

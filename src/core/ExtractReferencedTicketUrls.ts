@@ -3,6 +3,7 @@ import { simpleGit } from 'simple-git'
 import { extractTicketReferencesFrom } from './project'
 
 export type TicketIdentifier = string
+export type NoTicketIdentifier = 'no ticket'
 
 export type Ticket = {
   kind: 'ticket'
@@ -12,7 +13,7 @@ export type Ticket = {
 
 export type NoTicket = {
   kind: 'no-ticket'
-  identifier: 'no ticket'
+  identifier: NoTicketIdentifier
 }
 
 export type Hash = string

@@ -1,6 +1,6 @@
-import { Ticket, NoTicket } from '../src/core/ExtractReferencedTicketUrls'
-import { Task, Status } from '../src/core/ReleaseTasks'
-import { TaskStorage } from '../src/pages/index/TaskStorage'
+import { NoTicketIdentifier, TicketIdentifier } from '../src/core/ExtractReferencedTicketUrls'
+import { Status, Task } from '../src/core/ReleaseTasks'
+import { TaskStorage } from '../src/core/TaskStorage'
 
 export class InMemoryTaskStorage implements TaskStorage {
   private tasks: Task[] | 'empty'
@@ -29,14 +29,14 @@ export class InMemoryTaskStorage implements TaskStorage {
     })
   }
 
-  async transitionTicketTest(ticket: Ticket | NoTicket, status: Status): Promise<void> {
+  async transitionTicketTest(ticketIdentifier: TicketIdentifier | NoTicketIdentifier, status: Status): Promise<void> {
     if (this.tasks === 'empty') {
       return
     }
     this.tasks = this.tasks.map((task) => {
       if (task.type === 'test') {
         const ticketTests = task.ticketTests.map((test) => {
-          if (test.ticket === ticket) {
+          if (test.ticket.identifier === ticketIdentifier) {
             return { ...test, status }
           }
           return test

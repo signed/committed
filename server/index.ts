@@ -16,7 +16,7 @@ import * as trpcExpress from '@trpc/server/adapters/express'
 import { appRouter } from '../trpc/server'
 import { createContext } from '../trpc/context'
 import { InMemoryTaskStorage } from './InMemoryTaskStorage'
-import { TaskStorage } from '../src/pages/index/TaskStorage'
+import { TaskStorage } from '../src/core/TaskStorage'
 
 const isProduction = process.env['NODE_ENV'] === 'production'
 const taskStorage: TaskStorage = new InMemoryTaskStorage()
