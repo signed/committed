@@ -27,9 +27,17 @@ const ticketTest = router({
   }),
 })
 
+const ChangeTaskTestStatusSchema = z.object({ name: z.string(), status: StatusSchema })
+const task = router({
+  setStatus: t.procedure.input(ChangeTaskTestStatusSchema).mutation(async ({ input, ctx }) => {
+    await ctx.taskStorage.transitionTaskStatus(input.name, input.status)
+    return 'success'
+  }),
+})
+
 // root router to call
 export const appRouter = router({
-  // merge predefined routers
+  task,
   ticketTest,
   // or individual procedures
   hello: publicProcedure.input(z.string().nullish()).query(({ input }) => {
