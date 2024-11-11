@@ -1,4 +1,4 @@
-import { testersToString, TestTask, testTaskSummary, ticketToString } from '../../core/ReleaseTasks'
+import { Tester, testersToString, TestTask, testTaskSummary, ticketToString } from '../../core/ReleaseTasks'
 import { StatusToggle } from './StatusToggle'
 import { client } from '../../../trpc/client'
 import { TestersSelect } from './TestersSelect'
@@ -6,6 +6,16 @@ import { TestersSelect } from './TestersSelect'
 type TestTaskEditorProperties = {
   task: TestTask
 }
+
+const testers: Tester[] = [
+  { full: 'Forgetful Person', first: 'Forgetful', last: 'Person' },
+  { full: 'Lazy Person', first: 'Lazy', last: 'Person' },
+  { full: 'Cowboy Person', first: 'Cowboy', last: 'Person' },
+  { full: 'Four Person', first: 'Four', last: 'Person' },
+  { full: 'Three Person', first: 'Three', last: 'Person' },
+  { full: 'Two Person', first: 'Two', last: 'Person' },
+  { full: 'One Person', first: 'One', last: 'Person' },
+]
 
 export function TestTaskEditor(props: TestTaskEditorProperties) {
   const task = props.task
@@ -27,8 +37,8 @@ export function TestTaskEditor(props: TestTaskEditorProperties) {
                   .catch((e) => console.log(e))
               }}
             />
-            {`${ticketToString(ticketTest.ticket)} ${testersToString(ticketTest.tester)}`}
-            <TestersSelect />
+            {`${ticketToString(ticketTest.ticket)} ${testersToString(ticketTest.testers)}`}
+            <TestersSelect availableTesters={testers} assignedTesters={ticketTest.testers} />
           </li>
         ))}
       </ul>

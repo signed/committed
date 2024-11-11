@@ -1,4 +1,4 @@
-import { CommitsContainer, NoTicket, type Ticket, TicketIdentifier } from './ExtractReferencedTicketUrls'
+import { Author, CommitsContainer, NoTicket, type Ticket, TicketIdentifier } from './ExtractReferencedTicketUrls'
 import { ReleaseConfiguration, ReleaseTaskName } from '../../server/configuration'
 
 export const StatusValues = ['todo', 'in progress', 'done'] as const
@@ -15,7 +15,7 @@ export type TicketTest = {
   required: boolean
   status: Status
   ticket: Ticket | NoTicket
-  tester: string[]
+  testers: Tester[]
 }
 
 export type TestTask = {
@@ -24,16 +24,33 @@ export type TestTask = {
   ticketTests: TicketTest[]
 }
 
+export type Tester = {
+  full: string
+  first: string
+  last: string
+}
+
+const authorToTester = (author: Author): Tester => {
+  const strings = author.split(' ')
+  const first = strings[0] ?? author
+  const last = strings[1] ?? ''
+  return {
+    full: author,
+    first,
+    last,
+  }
+}
+
 export type Task = GenericTask | TestTask
 
 const deriveTicketTestFor = (container: CommitsContainer): TicketTest => {
   const authors = container.commits.map((commit) => commit.author)
-  const tester = [...new Set(authors)]
+  const testers = [...new Set(authors)].map(authorToTester)
   return {
     required: true,
     status: 'todo',
     ticket: container.ticket,
-    tester,
+    testers,
   }
 }
 
@@ -97,8 +114,8 @@ export const ticketToString = (ticket: Ticket | NoTicket) => {
   return ticket.url
 }
 
-export function testersToString(testers: string[]) {
-  return testers.join(', ')
+export function testersToString(testers: Tester[]) {
+  return testers.map((tester) => tester.full).join(', ')
 }
 
 export function testTaskSummary(testTask: TestTask) {
@@ -107,7 +124,7 @@ export function testTaskSummary(testTask: TestTask) {
 }
 
 export function ticketTestSummary(ticketTest: TicketTest) {
-  return `${statusToEmote(ticketTest.status)} ${ticketToString(ticketTest.ticket)} ${testersToString(ticketTest.tester)}`
+  return `${statusToEmote(ticketTest.status)} ${ticketToString(ticketTest.ticket)} ${testersToString(ticketTest.testers)}`
 }
 
 export function genericTaskSummary(task: GenericTask) {

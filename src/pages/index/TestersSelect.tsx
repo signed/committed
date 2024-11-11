@@ -1,24 +1,24 @@
 import TextField from '@mui/material/TextField'
 import Autocomplete from '@mui/material/Autocomplete'
 import { BaseTextFieldProps } from '@mui/material/TextField/TextField'
+import { Tester } from '../../core/ReleaseTasks'
 
-const testers = [
-  { id: 1, label: 'one' },
-  { id: 2, label: 'two' },
-  { id: 3, label: 'three' },
-  { id: 4, label: 'four' },
-  { id: 5, label: 'five' },
-]
+export type TestersSelectProperties = {
+  assignedTesters: Tester[]
+  availableTesters: Tester[]
+  onChange?: (assignedTesters: Tester[]) => void
+}
 
-export function TestersSelect() {
+export function TestersSelect(props: TestersSelectProperties) {
   return (
     <Autocomplete
       multiple
       sx={{ pt: 2, pb: 2 }}
-      options={testers}
-      defaultValue={[testers[1]]}
-      isOptionEqualToValue={(a, b) => a?.id === b?.id}
+      options={props.availableTesters}
+      defaultValue={props.assignedTesters}
+      isOptionEqualToValue={(a, b) => a?.full === b?.full}
       onChange={(_e, value) => console.log(value)}
+      getOptionLabel={(item) => item.full}
       filterSelectedOptions
       renderInput={(params) => {
         const { size, InputProps, InputLabelProps, ...rest } = params
