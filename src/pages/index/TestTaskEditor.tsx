@@ -1,6 +1,7 @@
 import { testersToString, TestTask, testTaskSummary, ticketToString } from '../../core/ReleaseTasks'
 import { StatusToggle } from './StatusToggle'
 import { client } from '../../../trpc/client'
+import { TestersSelect } from './TestersSelect'
 
 type TestTaskEditorProperties = {
   task: TestTask
@@ -27,6 +28,7 @@ export function TestTaskEditor(props: TestTaskEditorProperties) {
               }}
             />
             {`${ticketToString(ticketTest.ticket)} ${testersToString(ticketTest.tester)}`}
+            <TestersSelect />
           </li>
         ))}
       </ul>

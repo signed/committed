@@ -21,6 +21,9 @@
     "demo-repo": "tsx ./scripts/create-example-repository.ts"
   },
   "dependencies": {
+    "@emotion/react": "11.13.3",
+    "@emotion/styled": "11.13.0",
+    "@mui/material": "6.1.6",
     "@trpc/client": "10.45.2",
     "@trpc/server": "10.45.2",
     "compression": "1.7.5",
