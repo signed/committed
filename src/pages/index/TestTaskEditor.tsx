@@ -43,11 +43,9 @@ export function TestTaskEditor(props: TestTaskEditorProperties) {
               assignedTesters={ticketTest.testers}
               onChange={async (testers) => {
                 const identifier = ticketTest.ticket.identifier
-                console.log(testers)
                 await client.ticketTest.setTesters
                   .mutate({ identifier, testers })
                   .then(() => {
-                    console.log('reload now ...')
                     window.location.reload()
                   })
                   .catch((e) => console.log(e))
