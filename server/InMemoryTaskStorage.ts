@@ -1,5 +1,5 @@
 import { NoTicketIdentifier, TicketIdentifier } from '../src/core/ExtractReferencedTicketUrls'
-import { Status, Task } from '../src/core/ReleaseTasks'
+import { Status, Task, Tester } from '../src/core/ReleaseTasks'
 import { TaskStorage } from '../src/core/TaskStorage'
 
 export class InMemoryTaskStorage implements TaskStorage {
@@ -38,6 +38,27 @@ export class InMemoryTaskStorage implements TaskStorage {
         const ticketTests = task.ticketTests.map((test) => {
           if (test.ticket.identifier === ticketIdentifier) {
             return { ...test, status }
+          }
+          return test
+        })
+        return { ...task, ticketTests }
+      }
+      return task
+    })
+  }
+
+  async assignTestersToTicketTest(
+    ticketIdentifier: TicketIdentifier | NoTicketIdentifier,
+    testers: Tester[],
+  ): Promise<void> {
+    if (this.tasks === 'empty') {
+      return
+    }
+    this.tasks = this.tasks.map((task) => {
+      if (task.type === 'test') {
+        const ticketTests = task.ticketTests.map((test) => {
+          if (test.ticket.identifier === ticketIdentifier) {
+            return { ...test, testers }
           }
           return test
         })

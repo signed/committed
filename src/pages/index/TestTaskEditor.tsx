@@ -38,7 +38,21 @@ export function TestTaskEditor(props: TestTaskEditorProperties) {
               }}
             />
             {`${ticketToString(ticketTest.ticket)} ${testersToString(ticketTest.testers)}`}
-            <TestersSelect availableTesters={testers} assignedTesters={ticketTest.testers} />
+            <TestersSelect
+              availableTesters={testers}
+              assignedTesters={ticketTest.testers}
+              onChange={async (testers) => {
+                const identifier = ticketTest.ticket.identifier
+                console.log(testers)
+                await client.ticketTest.setTesters
+                  .mutate({ identifier, testers })
+                  .then(() => {
+                    console.log('reload now ...')
+                    window.location.reload()
+                  })
+                  .catch((e) => console.log(e))
+              }}
+            />
           </li>
         ))}
       </ul>

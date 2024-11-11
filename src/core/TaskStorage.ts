@@ -1,4 +1,4 @@
-import { Status, Task } from './ReleaseTasks'
+import { Status, Task, Tester } from './ReleaseTasks'
 import { NoTicketIdentifier, TicketIdentifier } from './ExtractReferencedTicketUrls'
 
 export interface TaskStorage {
@@ -8,5 +8,7 @@ export interface TaskStorage {
 
   transitionTaskStatus(taskName: string, status: Status): Promise<void>
 
-  transitionTicketTest(ticket: TicketIdentifier | NoTicketIdentifier, status: Status): Promise<void>
+  transitionTicketTest(ticketIdentifier: TicketIdentifier | NoTicketIdentifier, status: Status): Promise<void>
+
+  assignTestersToTicketTest(ticketIdentifier: TicketIdentifier | NoTicketIdentifier, testers: Tester[]): Promise<void>
 }

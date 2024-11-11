@@ -17,7 +17,7 @@ export function TestersSelect(props: TestersSelectProperties) {
       options={props.availableTesters}
       defaultValue={props.assignedTesters}
       isOptionEqualToValue={(a, b) => a?.full === b?.full}
-      onChange={(_e, value) => console.log(value)}
+      onChange={(_e, value) => props.onChange?.(value)}
       getOptionLabel={(item) => item.full}
       filterSelectedOptions
       renderInput={(params) => {

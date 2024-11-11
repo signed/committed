@@ -18,11 +18,22 @@ const TicketIdentifierSchema = z.custom<TicketIdentifier | NoTicketIdentifier>((
 
 const StatusSchema = z.enum(StatusValues)
 
-const ChangeTicketTestStatusSchema = z.object({ identifier: TicketIdentifierSchema, status: StatusSchema })
+const TestersSchema = z.object({
+  full: z.string(),
+  first: z.string(),
+  last: z.string(),
+})
+
+const SetTicketTestStatusSchema = z.object({ identifier: TicketIdentifierSchema, status: StatusSchema })
+const SetTicketTestersSchema = z.object({ identifier: TicketIdentifierSchema, testers: z.array(TestersSchema) })
 
 const ticketTest = router({
-  setStatus: t.procedure.input(ChangeTicketTestStatusSchema).mutation(async ({ input, ctx }) => {
+  setStatus: t.procedure.input(SetTicketTestStatusSchema).mutation(async ({ input, ctx }) => {
     await ctx.taskStorage.transitionTicketTest(input.identifier, input.status)
+    return 'success'
+  }),
+  setTesters: t.procedure.input(SetTicketTestersSchema).mutation(async ({ input, ctx }) => {
+    await ctx.taskStorage.assignTestersToTicketTest(input.identifier, input.testers)
     return 'success'
   }),
 })
