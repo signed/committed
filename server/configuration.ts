@@ -1,6 +1,7 @@
 import { absolutePathFor } from './path'
 
 import { Treeish } from '../src/core/project'
+import { Tester } from '../src/core/ReleaseTasks'
 
 export type GitRepositoryConfiguration = {
   baseDirectory: string
@@ -17,6 +18,7 @@ export type ReleaseTaskName = string & { __brand: 'ReleaseTaskName' }
 
 export type ReleaseConfiguration = {
   tasks: ReleaseTaskName[]
+  testers: Tester[]
 }
 
 export type Configuration = {
@@ -29,6 +31,22 @@ function parseReleaseTaskNames(releaseTasksString: string) {
   return releaseTasksString.split('|') as ReleaseTaskName[]
 }
 
+function parseTesters(testersString: string): Tester[] {
+  return testersString
+    .split('|')
+    .map((s) => s.trim())
+    .map((full) => {
+      const parts = full.split(' ')
+      const first = parts[0] ?? full
+      const last = parts[1] ?? ''
+      return {
+        full,
+        first,
+        last,
+      }
+    })
+}
+
 export const loadConfigurationFrom = (env: NodeJS.ProcessEnv): Configuration | 'failed' => {
   const baseDirectory = absolutePathFor(env['BASE_DIRECTORY'] ?? process.cwd())
   const from = env['FROM']
@@ -36,18 +54,21 @@ export const loadConfigurationFrom = (env: NodeJS.ProcessEnv): Configuration | '
   const project = env['PROJECT']
   const url = env['TICKET_URL']
   const releaseTasksString = env['RELEASE_TASKS']
+  const testersString = env['TESTERS']
 
   if (
     from === undefined ||
     to === undefined ||
     project === undefined ||
     url === undefined ||
-    releaseTasksString === undefined
+    releaseTasksString === undefined ||
+    testersString === undefined
   ) {
     return 'failed'
   }
 
   const releaseTasks = parseReleaseTaskNames(releaseTasksString)
+  const testers = parseTesters(testersString)
 
   return {
     repository: {
@@ -61,6 +82,7 @@ export const loadConfigurationFrom = (env: NodeJS.ProcessEnv): Configuration | '
     },
     release: {
       tasks: releaseTasks,
+      testers,
     },
   }
 }

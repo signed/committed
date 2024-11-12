@@ -3,7 +3,7 @@ import { SampleLabelingView } from '../../sample-labeling-view'
 import { CommitRange } from '../../core/project'
 import '../../AbstractToDetails/AbstractToDetails.css'
 import { timeSpanOver } from '../../core/commits'
-import { produceMessage, Task } from '../../core/ReleaseTasks'
+import { produceMessage, Task, Tester } from '../../core/ReleaseTasks'
 import { TaskSection } from './TaskSection'
 import { ReferencedTickets } from './ReferencedTickets'
 
@@ -12,6 +12,7 @@ export type PageProperties = {
   project: string
   range: CommitRange
   releaseTasks: Task[]
+  testers: Tester[]
 }
 
 function Page(props: PageProperties) {
@@ -25,7 +26,7 @@ function Page(props: PageProperties) {
       <SampleLabelingView project={props.project} range={props.range} timeSpan={timeSpan}></SampleLabelingView>
       <h1>Release Tasks</h1>
       <textarea rows={lineCount + 3} cols={80} defaultValue={message} />
-      <TaskSection tasks={props.releaseTasks} />
+      <TaskSection tasks={props.releaseTasks} testers={props.testers} />
       <h1>Referenced Tickets</h1>
       <ReferencedTickets ticketIdentifierToDetails={props.ticketIdentifierToDetails}></ReferencedTickets>
     </>

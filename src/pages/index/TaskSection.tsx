@@ -1,28 +1,29 @@
-import { Task } from '../../core/ReleaseTasks'
+import { Task, Tester } from '../../core/ReleaseTasks'
 import { TestTaskEditor } from './TestTaskEditor'
 import { GenericTaskEditor } from './GenericTaskEditor'
 
 export type TaskSectionProperties = {
   tasks: Task[]
+  testers: Tester[]
 }
 
-export const TaskSection = (_props: TaskSectionProperties) => {
+export const TaskSection = (props: TaskSectionProperties) => {
   return (
     <>
       <ol>
-        {_props.tasks.map((task) => {
-          return <li key={task.name}>{editorFor(task)}</li>
+        {props.tasks.map((task) => {
+          return <li key={task.name}>{editorFor(task, props.testers)}</li>
         })}
       </ol>
     </>
   )
 }
 
-function editorFor(task: Task) {
+function editorFor(task: Task, testers: Tester[]) {
   switch (task.type) {
     case 'generic':
       return <GenericTaskEditor task={task} />
     case 'test':
-      return <TestTaskEditor task={task} />
+      return <TestTaskEditor task={task} testers={testers} />
   }
 }

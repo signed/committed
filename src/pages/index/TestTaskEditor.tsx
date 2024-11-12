@@ -5,17 +5,8 @@ import { TestersSelect } from './TestersSelect'
 
 type TestTaskEditorProperties = {
   task: TestTask
+  testers: Tester[]
 }
-
-const testers: Tester[] = [
-  { full: 'Forgetful Person', first: 'Forgetful', last: 'Person' },
-  { full: 'Lazy Person', first: 'Lazy', last: 'Person' },
-  { full: 'Cowboy Person', first: 'Cowboy', last: 'Person' },
-  { full: 'Four Person', first: 'Four', last: 'Person' },
-  { full: 'Three Person', first: 'Three', last: 'Person' },
-  { full: 'Two Person', first: 'Two', last: 'Person' },
-  { full: 'One Person', first: 'One', last: 'Person' },
-]
 
 export function TestTaskEditor(props: TestTaskEditorProperties) {
   const task = props.task
@@ -39,7 +30,7 @@ export function TestTaskEditor(props: TestTaskEditorProperties) {
             />
             {`${ticketToString(ticketTest.ticket)} ${testersToString(ticketTest.testers)}`}
             <TestersSelect
-              availableTesters={testers}
+              availableTesters={props.testers}
               assignedTesters={ticketTest.testers}
               onChange={async (testers) => {
                 const identifier = ticketTest.ticket.identifier

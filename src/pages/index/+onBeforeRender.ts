@@ -21,6 +21,7 @@ const loadPageProperties = async (context: PageContextServer) => {
     project,
     range,
     releaseTasks,
+    testers: context.configuration.release.testers,
   } satisfies PageProperties
 }
 
