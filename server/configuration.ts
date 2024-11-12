@@ -25,6 +25,10 @@ export type Configuration = {
   release: ReleaseConfiguration
 }
 
+function parseReleaseTaskNames(releaseTasksString: string) {
+  return releaseTasksString.split('|') as ReleaseTaskName[]
+}
+
 export const loadConfigurationFrom = (env: NodeJS.ProcessEnv): Configuration | 'failed' => {
   const baseDirectory = absolutePathFor(env['BASE_DIRECTORY'] ?? process.cwd())
   const from = env['FROM']
@@ -41,10 +45,6 @@ export const loadConfigurationFrom = (env: NodeJS.ProcessEnv): Configuration | '
     releaseTasksString === undefined
   ) {
     return 'failed'
-  }
-
-  function parseReleaseTaskNames(releaseTasksString: string) {
-    return releaseTasksString.split('|') as ReleaseTaskName[]
   }
 
   const releaseTasks = parseReleaseTaskNames(releaseTasksString)
