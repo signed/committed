@@ -4,14 +4,20 @@ import { PageContextProvider } from './usePageContext'
 import type { PageContext } from './types'
 import './PageShell.css'
 import { Link } from './Link'
+import { client } from '../../trpc/client'
 
 export function PageShell({ children, pageContext }: { children: React.ReactNode; pageContext: PageContext }) {
+  const onSync = async () => {
+    await client.project.sync.mutate()
+    window.location.reload()
+  }
   return (
     <React.StrictMode>
       <PageContextProvider pageContext={pageContext}>
         <Layout>
           <Sidebar>
             <Logo />
+            <button onClick={onSync}>sync</button>
             <Link className="navitem" href="/">
               Home
             </Link>

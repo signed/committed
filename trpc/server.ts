@@ -46,10 +46,18 @@ const task = router({
   }),
 })
 
+const project = router({
+  sync: t.procedure.mutation(async ({ ctx }) => {
+    await ctx.taskStorage.clear()
+    return 'success'
+  }),
+})
+
 // root router to call
 export const appRouter = router({
   task,
   ticketTest,
+  project,
   // or individual procedures
   hello: publicProcedure.input(z.string().nullish()).query(({ input }) => {
     const name = input ?? 'world'

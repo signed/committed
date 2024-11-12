@@ -2,6 +2,8 @@ import { Status, Task, Tester } from './ReleaseTasks'
 import { NoTicketIdentifier, TicketIdentifier } from './ExtractReferencedTicketUrls'
 
 export interface TaskStorage {
+  clear(): Promise<void>
+
   loadTasks(): Promise<Task[] | 'empty'>
 
   storeTasks(tasks: Task[]): Promise<void>

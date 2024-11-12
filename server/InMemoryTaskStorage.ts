@@ -9,6 +9,10 @@ export class InMemoryTaskStorage implements TaskStorage {
     this.tasks = 'empty'
   }
 
+  async clear(): Promise<void> {
+    this.tasks = 'empty'
+  }
+
   async loadTasks(): Promise<Task[] | 'empty'> {
     return this.tasks
   }
