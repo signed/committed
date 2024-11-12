@@ -21,10 +21,15 @@ function Page(props: PageProperties) {
     return null
   }
   const { message, lineCount } = produceMessage(props.releaseTasks)
+
+  const onCopyToClipboard = async () => {
+    await navigator.clipboard.writeText(message)
+  }
   return (
     <>
       <SampleLabelingView project={props.project} range={props.range} timeSpan={timeSpan}></SampleLabelingView>
       <h1>Release Tasks</h1>
+      <button onClick={() => onCopyToClipboard()}>Copy to clipboard</button>
       <textarea rows={lineCount + 3} cols={80} defaultValue={message} />
       <TaskSection tasks={props.releaseTasks} testers={props.testers} />
       <h1>Referenced Tickets</h1>
