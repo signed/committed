@@ -38,6 +38,7 @@ export const extractReferencedTicketUrls = async (configuration: Configuration):
   const out = await git.log({
     format: { subject: '%s', author: '%an', dateString: '%aI', hash: '%H' },
     '--ancestry-path': null,
+    '--no-merges': null,
     from: configuration.repository.from,
     to: configuration.repository.to,
   })
