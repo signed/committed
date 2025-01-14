@@ -8,7 +8,7 @@ import { generate } from 'random-words'
 function directoryExists(filePath: string) {
   try {
     return lstatSync(filePath).isDirectory()
-  } catch (err) {
+  } catch (_err) {
     return false
   }
 }

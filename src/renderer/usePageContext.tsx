@@ -16,7 +16,6 @@ export function PageContextProvider({
   return <Context.Provider value={pageContext}>{children}</Context.Provider>
 }
 
-// eslint-disable-next-line react-refresh/only-export-components
 export function usePageContext() {
   const pageContext = useContext(Context)
   return pageContext
