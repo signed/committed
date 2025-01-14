@@ -2,7 +2,7 @@
   "name": "committed",
   "version": "1.0.0",
   "description": "Identify the tickets mentioned in commit messages since the last release",
-  "packageManager": "pnpm@9.12.3",
+  "packageManager": "pnpm@9.15.4+sha256.9bee59c7313a216722c079c1e22160dea7f88df4e0c3450b1d7b01b882336c6a",
   "private": true,
   "type": "module",
   "scripts": {
@@ -21,29 +21,29 @@
     "demo-repo": "tsx ./scripts/create-example-repository.ts"
   },
   "dependencies": {
-    "@emotion/react": "11.13.3",
-    "@emotion/styled": "11.13.0",
-    "@mui/material": "6.1.6",
+    "@emotion/react": "11.14.0",
+    "@emotion/styled": "11.14.0",
+    "@mui/material": "6.4.0",
     "@trpc/client": "10.45.2",
     "@trpc/server": "10.45.2",
     "compression": "1.7.5",
-    "dotenv": "16.4.5",
-    "express": "4.21.1",
+    "dotenv": "16.4.7",
+    "express": "4.21.2",
     "react": "18.3.1",
     "react-dom": "18.3.1",
     "simple-git": "3.27.0",
     "sirv": "3.0.0",
     "vike": "0.4.200",
     "vite": "5.4.10",
-    "zod": "3.23.8"
+    "zod": "3.24.1"
   },
   "devDependencies": {
     "@signed/prettier-config": "0.2.0",
     "@tsconfig/node20": "20.1.4",
     "@tsconfig/strictest": "2.0.5",
     "@types/compression": "1.7.5",
-    "@types/express": "4.17.20",
-    "@types/node": "22.7.9",
+    "@types/express": "5.0.0",
+    "@types/node": "22.10.6",
     "@types/react": "18.3.12",
     "@types/react-dom": "18.3.1",
     "@typescript-eslint/eslint-plugin": "6.8.0",
@@ -54,12 +54,12 @@
     "eslint-plugin-react": "7.33.2",
     "eslint-plugin-react-hooks": "4.6.0",
     "eslint-plugin-react-refresh": "0.4.3",
-    "prettier": "3.3.3",
+    "prettier": "3.4.2",
     "random-words": "2.0.1",
     "rimraf": "6.0.1",
     "tsx": "4.19.2",
-    "typescript": "5.6.3",
-    "vitest": "2.1.4"
+    "typescript": "5.7.3",
+    "vitest": "2.1.8"
   },
   "prettier": "@signed/prettier-config"
 }
