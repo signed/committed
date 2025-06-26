@@ -1,7 +1,8 @@
-import { Tester, testersToString, TestTask, testTaskSummary, ticketToString } from '../../core/ReleaseTasks'
+import { Tester, testersToString, TestTask, testTaskSummary, ticketToShortString } from '../../core/ReleaseTasks'
 import { StatusToggle } from './StatusToggle'
 import { client } from '../../../trpc/client'
 import { TestersSelect } from './TestersSelect'
+import { ExternalLink } from './ExternalLink'
 
 type TestTaskEditorProperties = {
   task: TestTask
@@ -28,7 +29,9 @@ export function TestTaskEditor(props: TestTaskEditorProperties) {
                   .catch((e) => console.log(e))
               }}
             />
-            {`${ticketToString(ticketTest.ticket)} ${testersToString(ticketTest.testers)}`}
+            {' ' + ticketToShortString(ticketTest.ticket)}
+            {ticketTest.ticket.kind === 'ticket' && <ExternalLink destination={ticketTest.ticket.url} />}
+            {' ' + testersToString(ticketTest.testers)}
             <TestersSelect
               availableTesters={props.testers}
               assignedTesters={ticketTest.testers}

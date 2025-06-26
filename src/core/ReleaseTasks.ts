@@ -107,6 +107,13 @@ export const statusToEmote = (status: Status) => {
   }
 }
 
+export const ticketToShortString = (ticket: Ticket | NoTicket) => {
+  if (ticket.kind === 'no-ticket') {
+    return '[no ticket]'
+  }
+  return ticket.identifier
+}
+
 export const ticketToString = (ticket: Ticket | NoTicket) => {
   if (ticket.kind === 'no-ticket') {
     return '[no ticket]'
