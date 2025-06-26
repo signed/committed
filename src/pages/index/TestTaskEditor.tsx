@@ -1,4 +1,12 @@
-import { Tester, testersToString, TestTask, testTaskSummary, ticketToShortString } from '../../core/ReleaseTasks'
+import {
+  Tester,
+  testersToString,
+  TestTask,
+  testTaskSummary,
+  ticketToShortString,
+  statusFor,
+  Status,
+} from '../../core/ReleaseTasks'
 import { StatusToggle } from './StatusToggle'
 import { client } from '../../../trpc/client'
 import { TestersSelect } from './TestersSelect'
@@ -17,20 +25,22 @@ export function TestTaskEditor(props: TestTaskEditorProperties) {
       <ul>
         {task.ticketTests.map((ticketTest) => {
           const ticket = ticketTest.ticket
+          const enableStatusToggle = ticketTest.testers.length > 0
+          const status = statusFor(ticketTest)
+
+          const updateStatus = async (status: Status) => {
+            const identifier = ticket.identifier
+            await client.ticketTest.setStatus
+              .mutate({ identifier, status })
+              .then(() => {
+                window.location.reload()
+              })
+              .catch((e) => console.log(e))
+          }
+          const onChange = enableStatusToggle ? updateStatus : () => {}
           return (
             <li key={ticket.identifier}>
-              <StatusToggle
-                status={ticketTest.status}
-                onChange={async (status) => {
-                  const identifier = ticket.identifier
-                  await client.ticketTest.setStatus
-                    .mutate({ identifier, status })
-                    .then(() => {
-                      window.location.reload()
-                    })
-                    .catch((e) => console.log(e))
-                }}
-              />
+              <StatusToggle status={status} onChange={onChange} />
               {' ' + ticketToShortString(ticket)}
               {ticket.kind === 'ticket' && <ExternalLink destination={ticket.url} />}
               {' ' + testersToString(ticketTest.testers)}

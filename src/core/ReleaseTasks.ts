@@ -135,7 +135,7 @@ export function ticketTestSummary(ticketTest: TicketTest) {
   return `${statusToEmote(status)} ${ticketToString(ticketTest.ticket)} ${testersToString(ticketTest.testers)}`
 }
 
-function statusFor(ticketTest: TicketTest) {
+export function statusFor(ticketTest: TicketTest) {
   return ticketTest.testers.length === 0 ? 'done' : ticketTest.status
 }
 
