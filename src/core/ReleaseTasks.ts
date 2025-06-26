@@ -85,11 +85,11 @@ export const deriveReleaseTasks = (
 
 export const overallTestStatus = (testTask: TestTask): Status => {
   const ticketTests = testTask.ticketTests
-  const atLeastOneInProgress = ticketTests.some((test) => test.status === 'in progress')
+  const atLeastOneInProgress = ticketTests.some((test) => statusFor(test) === 'in progress')
   if (atLeastOneInProgress) {
     return 'in progress'
   }
-  const allDone = ticketTests.every((test) => test.status === 'done')
+  const allDone = ticketTests.every((test) => statusFor(test) === 'done')
   if (allDone) {
     return 'done'
   }
@@ -131,7 +131,12 @@ export function testTaskSummary(testTask: TestTask) {
 }
 
 export function ticketTestSummary(ticketTest: TicketTest) {
-  return `${statusToEmote(ticketTest.status)} ${ticketToString(ticketTest.ticket)} ${testersToString(ticketTest.testers)}`
+  const status = statusFor(ticketTest)
+  return `${statusToEmote(status)} ${ticketToString(ticketTest.ticket)} ${testersToString(ticketTest.testers)}`
+}
+
+function statusFor(ticketTest: TicketTest) {
+  return ticketTest.testers.length === 0 ? 'done' : ticketTest.status
 }
 
 export function genericTaskSummary(task: GenericTask) {
