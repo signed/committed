@@ -18,11 +18,11 @@ importers:
         specifier: 7.1.2
         version: 7.1.2(@emotion/react@11.14.0(@types/react@19.1.8)(react@19.1.0))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.1.8)(react@19.1.0))(@types/react@19.1.8)(react@19.1.0))(@types/react@19.1.8)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       '@trpc/client':
-        specifier: 10.45.2
-        version: 10.45.2(@trpc/server@10.45.2)
+        specifier: 11.4.2
+        version: 11.4.2(@trpc/server@11.4.2(typescript@5.8.3))(typescript@5.8.3)
       '@trpc/server':
-        specifier: 10.45.2
-        version: 10.45.2
+        specifier: 11.4.2
+        version: 11.4.2(typescript@5.8.3)
       compression:
         specifier: 1.8.0
         version: 1.8.0
@@ -936,13 +936,16 @@ packages:
   '@signed/prettier-config@0.2.0':
     resolution: {integrity: sha512-QTdGmp6k6bjCTw9mBW2qOjdesLsm3idbNXDLwbqDTt3DaMdNj+3Ae1mfcPcZbX5mgIcwo+u6B7mggMD4hjlylQ==}
 
-  '@trpc/client@10.45.2':
-    resolution: {integrity: sha512-ykALM5kYWTLn1zYuUOZ2cPWlVfrXhc18HzBDyRhoPYN0jey4iQHEFSEowfnhg1RvYnrAVjNBgHNeSAXjrDbGwg==}
+  '@trpc/client@11.4.2':
+    resolution: {integrity: sha512-Eep1rorAsATs9bxgaXf+BV34CRs4lAKQmwumUL4CNdNDkJItyfuWUr3xWx0np1w3EzUDVA0YDMK93iKDBBA0KQ==}
     peerDependencies:
-      '@trpc/server': 10.45.2
+      '@trpc/server': 11.4.2
+      typescript: '>=5.7.2'
 
-  '@trpc/server@10.45.2':
-    resolution: {integrity: sha512-wOrSThNNE4HUnuhJG6PfDRp4L2009KDVxsd+2VYH8ro6o/7/jwYZ8Uu5j+VaW+mOmc8EHerHzGcdbGNQSAUPgg==}
+  '@trpc/server@11.4.2':
+    resolution: {integrity: sha512-THyq/V5bSFDHeWEAk6LqHF0IVTGk6voGwWsFEipzRRKOWWMIZINCsKZ4cISG6kWO2X9jBfMWv/S2o9hnC0zQ0w==}
+    peerDependencies:
+      typescript: '>=5.7.2'
 
   '@tsconfig/node20@20.1.6':
     resolution: {integrity: sha512-sz+Hqx9zwZDpZIV871WSbUzSqNIsXzghZydypnfgzPKLltVJfkINfUeTct31n/tTSa9ZE1ZOfKdRre1uHHquYQ==}
@@ -3462,11 +3465,14 @@ snapshots:
 
   '@signed/prettier-config@0.2.0': {}
 
-  '@trpc/client@10.45.2(@trpc/server@10.45.2)':
+  '@trpc/client@11.4.2(@trpc/server@11.4.2(typescript@5.8.3))(typescript@5.8.3)':
     dependencies:
-      '@trpc/server': 10.45.2
+      '@trpc/server': 11.4.2(typescript@5.8.3)
+      typescript: 5.8.3
 
-  '@trpc/server@10.45.2': {}
+  '@trpc/server@11.4.2(typescript@5.8.3)':
+    dependencies:
+      typescript: 5.8.3
 
   '@tsconfig/node20@20.1.6': {}
 

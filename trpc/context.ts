@@ -1,4 +1,4 @@
-import * as trpcExpress from '@trpc/server/dist/adapters/express'
+import * as trpcExpress from '@trpc/server/adapters/express'
 import { inferAsyncReturnType } from '@trpc/server'
 import { TaskStorage } from '../src/core/TaskStorage'
 
