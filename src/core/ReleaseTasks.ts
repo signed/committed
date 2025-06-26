@@ -143,8 +143,9 @@ export function genericTaskSummary(task: GenericTask) {
   return `${statusToEmote(task.status)} ${task.name}`
 }
 
-export const produceMessage = (releaseTasks: Task[]) => {
-  const lines = releaseTasks.flatMap((task) => {
+export const produceMessage = (releaseTitle: string | undefined, releaseTasks: Task[]) => {
+  const title = releaseTitle ? [releaseTitle] : []
+  const tasks = releaseTasks.flatMap((task) => {
     const type = task.type
     switch (type) {
       case 'generic':
@@ -153,6 +154,7 @@ export const produceMessage = (releaseTasks: Task[]) => {
         return deriveTestLinesFrom(task)
     }
   })
+  const lines = [...title, ...tasks]
   const message = lines.join('\n')
   return { message, lineCount: lines.length }
 }

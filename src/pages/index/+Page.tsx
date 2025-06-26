@@ -13,6 +13,7 @@ export type PageProperties = {
   range: CommitRange
   releaseTasks: Task[]
   testers: Tester[]
+  releaseTitle: string | undefined
 }
 
 function Page(props: PageProperties) {
@@ -20,7 +21,7 @@ function Page(props: PageProperties) {
   if (timeSpan === undefined) {
     return null
   }
-  const { message, lineCount } = produceMessage(props.releaseTasks)
+  const { message, lineCount } = produceMessage(props.releaseTitle, props.releaseTasks)
 
   const onCopyToClipboard = async () => {
     await navigator.clipboard.writeText(message)

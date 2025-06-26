@@ -17,6 +17,7 @@ export type TicketingConfiguration = {
 export type ReleaseTaskName = string & { __brand: 'ReleaseTaskName' }
 
 export type ReleaseConfiguration = {
+  title: string | undefined
   tasks: ReleaseTaskName[]
   testers: Tester[]
 }
@@ -53,6 +54,7 @@ export const loadConfigurationFrom = (env: NodeJS.ProcessEnv): Configuration | '
   const to = env['TO']
   const project = env['PROJECT']
   const url = env['TICKET_URL']
+  const releaseTitleString = env['RELEASE_TITLE']
   const releaseTasksString = env['RELEASE_TASKS']
   const testersString = env['TESTERS']
 
@@ -81,6 +83,7 @@ export const loadConfigurationFrom = (env: NodeJS.ProcessEnv): Configuration | '
       url,
     },
     release: {
+      title: releaseTitleString,
       tasks: releaseTasks,
       testers,
     },
