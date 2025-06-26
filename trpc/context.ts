@@ -1,5 +1,4 @@
 import * as trpcExpress from '@trpc/server/adapters/express'
-import { inferAsyncReturnType } from '@trpc/server'
 import { TaskStorage } from '../src/core/TaskStorage'
 
 type AdditionalContext = {
@@ -16,4 +15,4 @@ export const createContext = (additionalContext: AdditionalContext) => {
   }
 }
 
-export type TrpcContext = inferAsyncReturnType<ReturnType<typeof createContext>>
+export type TrpcContext = Awaited<ReturnType<typeof createContext>>
