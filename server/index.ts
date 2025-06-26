@@ -7,7 +7,7 @@
 import 'dotenv/config'
 import express from 'express'
 import compression from 'compression'
-import { renderPage } from 'vike/server'
+import { renderPage, createDevMiddleware } from 'vike/server'
 import { root } from './root.js'
 import { loadConfigurationFrom } from './configuration'
 import * as fs from 'node:fs'
@@ -56,22 +56,9 @@ async function startServer() {
     const sirv = (await import('sirv')).default
     app.use(sirv(`${root}/dist/client`))
   } else {
-    // We instantiate Vite's development server and integrate its middleware to our server.
-    // ⚠️ We instantiate it only in development. (It isn't needed in production and it
-    // would unnecessarily bloat our server in production.)
-    const vite = await import('vite')
-    const viteDevMiddleware = (
-      await vite.createServer({
-        root,
-        server: { middlewareMode: true },
-      })
-    ).middlewares
-    app.use(viteDevMiddleware)
+    const { devMiddleware } = await createDevMiddleware({ root })
+    app.use(devMiddleware)
   }
-
-  // ...
-  // Other middlewares (e.g. some RPC middleware such as Telefunc)
-  // ...
 
   // vike middleware. It should always be our last middleware (because it's a
   // catch-all middleware superseding any middleware placed after it).
