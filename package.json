@@ -2,7 +2,7 @@
   "name": "committed",
   "version": "1.0.0",
   "description": "Identify the tickets mentioned in commit messages since the last release",
-  "packageManager": "pnpm@9.15.4+sha256.9bee59c7313a216722c079c1e22160dea7f88df4e0c3450b1d7b01b882336c6a",
+  "packageManager": "pnpm@10.11.0+sha256.a69e9cb077da419d47d18f1dd52e207245b29cac6e076acedbeb8be3b1a67bd7",
   "private": true,
   "type": "module",
   "scripts": {
