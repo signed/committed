@@ -62,7 +62,7 @@ async function startServer() {
 
   // vike middleware. It should always be our last middleware (because it's a
   // catch-all middleware superseding any middleware placed after it).
-  app.get('*', async (req, res, next) => {
+  app.get('/{*splat}', async (req, res, next) => {
     const pageContextInit = {
       urlOriginal: req.originalUrl,
       project,

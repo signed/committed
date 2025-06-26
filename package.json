@@ -28,7 +28,7 @@
     "@trpc/server": "11.4.2",
     "compression": "1.8.0",
     "dotenv": "16.6.0",
-    "express": "4.21.2",
+    "express": "5.1.0",
     "react": "19.1.0",
     "react-dom": "19.1.0",
     "simple-git": "3.28.0",
