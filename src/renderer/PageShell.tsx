@@ -24,6 +24,9 @@ export function PageShell({ children, pageContext }: { children: React.ReactNode
             <Link className="navitem" href="/about">
               About
             </Link>
+            <Link className="navitem" href="/clipboard">
+              Clipboard
+            </Link>
           </Sidebar>
           <Content>{children}</Content>
         </Layout>
