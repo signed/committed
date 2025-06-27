@@ -3,7 +3,7 @@ import { Counter } from './Counter'
 import '../../code.css'
 import { client } from '../../../trpc/client'
 
-function Page() {
+export function Page() {
   const [data, setData] = useState('')
 
   useEffect(() => {
@@ -28,5 +28,3 @@ function Page() {
     </>
   )
 }
-
-export default Page
