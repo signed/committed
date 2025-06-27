@@ -19,7 +19,7 @@ export type PageProperties = {
 export function Page(props: PageProperties) {
   const timeSpan = timeSpanOver(props.ticketIdentifierToDetails)
   if (timeSpan === undefined) {
-    return null
+    return <div>No Commits</div>
   }
   const { message, lineCount } = produceMessage(props.releaseTitle, props.releaseTasks)
 
