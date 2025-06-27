@@ -5,6 +5,32 @@ export const StatusValues = ['todo', 'in progress', 'done'] as const
 
 export type Status = (typeof StatusValues)[number]
 
+export type Renderer = {
+  ticketRenderer: TicketRenderer
+}
+
+const ticketToHtml = (ticket: Ticket | NoTicket) => {
+  if (ticket.kind === 'no-ticket') {
+    return '[no ticket]'
+  }
+  return `<a href="${ticket.url}" target="_blank" rel="noopener nofollow noreferrer">${ticket.identifier}</a>`
+}
+
+const ticketToString = (ticket: Ticket | NoTicket) => {
+  if (ticket.kind === 'no-ticket') {
+    return '[no ticket]'
+  }
+  return ticket.url
+}
+
+export const htmlRenderer = {
+  ticketRenderer: ticketToHtml,
+}
+
+export const textRenderer = {
+  ticketRenderer: ticketToString,
+}
+
 export type GenericTask = {
   type: 'generic'
   status: Status
@@ -114,13 +140,6 @@ export const ticketToShortString = (ticket: Ticket | NoTicket) => {
   return ticket.identifier
 }
 
-export const ticketToString = (ticket: Ticket | NoTicket) => {
-  if (ticket.kind === 'no-ticket') {
-    return '[no ticket]'
-  }
-  return ticket.url
-}
-
 export function testersToString(testers: Tester[]) {
   return testers.map((tester) => tester.full).join(', ')
 }
@@ -130,9 +149,11 @@ export function testTaskSummary(testTask: TestTask) {
   return `${statusToEmote(status)} Test`
 }
 
-export function ticketTestSummary(ticketTest: TicketTest) {
+type TicketRenderer = (ticket: Ticket | NoTicket) => string
+
+export function ticketTestSummary(ticketTest: TicketTest, ticketRenderer: TicketRenderer) {
   const status = statusFor(ticketTest)
-  return `${statusToEmote(status)} ${ticketToString(ticketTest.ticket)} ${testersToString(ticketTest.testers)}`
+  return `- ${statusToEmote(status)} ${ticketRenderer(ticketTest.ticket)} ${testersToString(ticketTest.testers)}`
 }
 
 export function statusFor(ticketTest: TicketTest) {
@@ -143,7 +164,8 @@ export function genericTaskSummary(task: GenericTask) {
   return `${statusToEmote(task.status)} ${task.name}`
 }
 
-export const produceMessage = (releaseTitle: string | undefined, releaseTasks: Task[]) => {
+export const render = (releaseTitle: string | undefined, releaseTasks: Task[], renderer: Renderer) => {
+  const ticketRenderer = renderer.ticketRenderer
   const title = releaseTitle ? [releaseTitle] : []
   const tasks = releaseTasks.flatMap((task) => {
     const type = task.type
@@ -151,7 +173,7 @@ export const produceMessage = (releaseTitle: string | undefined, releaseTasks: T
       case 'generic':
         return genericTaskSummary(task)
       case 'test':
-        return deriveTestLinesFrom(task)
+        return deriveTestLinesFrom(task, ticketRenderer)
     }
   })
   const lines = [...title, ...tasks]
@@ -159,8 +181,10 @@ export const produceMessage = (releaseTitle: string | undefined, releaseTasks: T
   return { message, lineCount: lines.length }
 }
 
-function deriveTestLinesFrom(testTask: TestTask): string[] {
-  return [testTaskSummary(testTask), ...testTask.ticketTests.map((test) => `-${ticketTestSummary(test)}`)]
+function deriveTestLinesFrom(testTask: TestTask, ticketRenderer: TicketRenderer): string[] {
+  const summary = testTaskSummary(testTask)
+  const testTasks = testTask.ticketTests.map((test) => ticketTestSummary(test, ticketRenderer))
+  return [summary, ...testTasks]
 }
 
 export function transitionToNextStatus(status: Status) {

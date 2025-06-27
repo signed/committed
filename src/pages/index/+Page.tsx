@@ -3,7 +3,7 @@ import { SampleLabelingView } from '../../sample-labeling-view'
 import { CommitRange } from '../../core/project'
 import '../../AbstractToDetails/AbstractToDetails.css'
 import { timeSpanOver } from '../../core/commits'
-import { produceMessage, Task, Tester } from '../../core/ReleaseTasks'
+import { htmlRenderer, render, Task, Tester, textRenderer } from '../../core/ReleaseTasks'
 import { TaskSection } from './TaskSection'
 import { ReferencedTickets } from './ReferencedTickets'
 
@@ -21,7 +21,8 @@ export function Page(props: PageProperties) {
   if (timeSpan === undefined) {
     return <div>No Commits</div>
   }
-  const { message, lineCount } = produceMessage(props.releaseTitle, props.releaseTasks)
+  //const { message, lineCount } = render(props.releaseTitle, props.releaseTasks, textRenderer)
+  const { message, lineCount } = render(props.releaseTitle, props.releaseTasks, htmlRenderer)
 
   const onCopyToClipboard = async () => {
     await navigator.clipboard.writeText(message)
