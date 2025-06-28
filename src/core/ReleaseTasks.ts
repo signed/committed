@@ -8,6 +8,7 @@ export type Status = (typeof StatusValues)[number]
 export type Renderer = {
   preludeRenderer?: PreludeRenderer
   ticketRenderer: TicketRenderer
+  lineBreak: LineBreak
 }
 
 const ticketToHtml = (ticket: Ticket | NoTicket) => {
@@ -24,13 +25,15 @@ const ticketToString = (ticket: Ticket | NoTicket) => {
   return ticket.url
 }
 
-export const htmlRenderer = {
+export const htmlRenderer: Renderer = {
   preludeRenderer: () => '<meta charset="utf-8">',
   ticketRenderer: ticketToHtml,
+  lineBreak: () => '<br>\n',
 }
 
-export const textRenderer = {
+export const textRenderer: Renderer = {
   ticketRenderer: ticketToString,
+  lineBreak: () => '\n',
 }
 
 export type GenericTask = {
@@ -153,6 +156,7 @@ export function testTaskSummary(testTask: TestTask) {
 
 type PreludeRenderer = () => string
 type TicketRenderer = (ticket: Ticket | NoTicket) => string
+type LineBreak = () => string
 
 export function ticketTestSummary(ticketTest: TicketTest, ticketRenderer: TicketRenderer) {
   const status = statusFor(ticketTest)
@@ -182,7 +186,7 @@ export const render = (releaseTitle: string | undefined, releaseTasks: Task[], r
     }
   })
   const lines = [...prelude, ...title, ...tasks]
-  const message = lines.join('\n')
+  const message = lines.join(renderer.lineBreak())
   return { message, lineCount: lines.length }
 }
 
