@@ -153,6 +153,9 @@ export const ticketToShortString = (ticket: Ticket | NoTicket) => {
 }
 
 export function testersToString(testers: Tester[]) {
+  if (testers.length === 0) {
+    return 'No Test'
+  }
   return testers.map((tester) => tester.full).join(', ')
 }
 
