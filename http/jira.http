@@ -1,0 +1,53 @@
+# https://developer.atlassian.com/cloud/jira/platform/rest/v3/intro/
+# https://developer.atlassian.com/cloud/jira/platform/basic-auth-for-rest-apis/
+# https://support.atlassian.com/jira/kb/retrieve-my-atlassian-sites-cloud-id/
+# https://admin.atlassian.com
+# https://developer.atlassian.com/cloud/confluence/oauth-2-3lo-apps/#3-2-construct-the-request-url
+
+### New Way
+POST https://api.atlassian.com/ex/jira/{{jira.cloudId}}/rest/api/3/issue/bulkfetch
+Authorization: {{jira.authorization}}
+Content-Type: application/json
+accept: application/json
+
+{
+  "expand": [
+    "names"
+  ],
+  "fields": [
+    "summary",
+    "project",
+    "assignee"
+  ],
+  "fieldsByKeys": false,
+  "issueIdsOrKeys": [
+    "LEARNJIRA-1",
+    "LEARNJIRA-2",
+    "LEARNJIRA-3"
+  ],
+  "properties": []
+}
+
+### Old Way
+POST https://{{jira.organisation}}.atlassian.net/rest/api/3/issue/bulkfetch
+Authorization: {{jira.authorization}}
+Content-Type: application/json
+accept: application/json
+
+{
+  "expand": [
+    "names"
+  ],
+  "fields": [
+    "summary",
+    "project",
+    "assignee"
+  ],
+  "fieldsByKeys": false,
+  "issueIdsOrKeys": [
+    "LEARNJIRA-1",
+    "LEARNJIRA-2",
+    "LEARNJIRA-3"
+  ],
+  "properties": []
+}
