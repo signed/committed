@@ -18,7 +18,7 @@ export type PageProperties = {
 }
 
 export function Page(props: PageProperties) {
-  const [format, setFormat] = useState<Format>('text/html')
+  const [format, setFormat] = useState<Format>('text/plain')
   const timeSpan = timeSpanOver(props.ticketIdentifierToDetails)
   if (timeSpan === undefined) {
     return <div>No Commits</div>
