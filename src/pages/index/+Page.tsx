@@ -27,7 +27,12 @@ export function Page(props: PageProperties) {
   const { message, lineCount } = render(props.releaseTitle, props.releaseTasks, renderer)
 
   const onCopyToClipboard = async () => {
-    await navigator.clipboard.writeText(message)
+    const htmlString = render(props.releaseTitle, props.releaseTasks, rendererFor('text/html'))
+    const htmlBlob = new Blob([htmlString.message], { type: 'text/html' })
+    const string = render(props.releaseTitle, props.releaseTasks, rendererFor('text/plain'))
+    const textBlob = new Blob([string.message], { type: 'text/plain' })
+    const item = new ClipboardItem({ 'text/html': htmlBlob, 'text/plain': textBlob })
+    await navigator.clipboard.write([item])
   }
   return (
     <>
