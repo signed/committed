@@ -35,7 +35,7 @@ export const htmlRenderer: Renderer = {
   preludeRenderer: () => '<meta charset="utf-8">',
   contentEnvelope: (content) => `<span>${content}</span>`,
   ticketRenderer: ticketToHtml,
-  lineBreak: () => '<br>\n',
+  lineBreak: () => '<br>',
 }
 
 export const textRenderer: Renderer = {
