@@ -197,7 +197,7 @@ export const render = (releaseTitle: string | undefined, releaseTasks: Task[], r
   const contentLines = [...title, ...tasks]
   const content = contentEnvelope(contentLines.join(renderer.lineBreak()))
   const lines = [...prelude, content]
-  const message = lines.join(renderer.lineBreak())
+  const message = lines.join('')
   return { message, lineCount: prelude.length + contentLines.length }
 }
 
