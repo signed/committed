@@ -3,7 +3,7 @@ import { SampleLabelingView } from '../../sample-labeling-view'
 import { CommitRange } from '../../core/project'
 import '../../AbstractToDetails/AbstractToDetails.css'
 import { timeSpanOver } from '../../core/commits'
-import { htmlRenderer, render, Task, Tester, textRenderer } from '../../core/ReleaseTasks'
+import { Format, render, rendererFor, Task, Tester } from '../../core/ReleaseTasks'
 import { TaskSection } from './TaskSection'
 import { ReferencedTickets } from './ReferencedTickets'
 import { useState } from 'react'
@@ -15,15 +15,6 @@ export type PageProperties = {
   releaseTasks: Task[]
   testers: Tester[]
   releaseTitle: string | undefined
-}
-
-type Format = 'text/plain' | 'text/html'
-
-function rendererFor(format: Format) {
-  if (format === 'text/plain') {
-    return textRenderer
-  }
-  return htmlRenderer
 }
 
 export function Page(props: PageProperties) {
@@ -48,7 +39,7 @@ export function Page(props: PageProperties) {
             type="radio"
             value="text/plain"
             checked={format === 'text/plain'}
-            onClick={() => {
+            onChange={() => {
               setFormat('text/plain')
             }}
           />
@@ -59,7 +50,7 @@ export function Page(props: PageProperties) {
             type="radio"
             value="text/html"
             checked={format === 'text/html'}
-            onClick={() => {
+            onChange={() => {
               setFormat('text/html')
             }}
           />

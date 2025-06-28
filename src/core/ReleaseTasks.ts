@@ -5,8 +5,14 @@ export const StatusValues = ['todo', 'in progress', 'done'] as const
 
 export type Status = (typeof StatusValues)[number]
 
+type PreludeRenderer = () => string
+type ContentEnvelope = (content: string) => string
+type TicketRenderer = (ticket: Ticket | NoTicket) => string
+type LineBreak = () => string
+
 export type Renderer = {
   preludeRenderer?: PreludeRenderer
+  contentEnvelope?: ContentEnvelope
   ticketRenderer: TicketRenderer
   lineBreak: LineBreak
 }
@@ -27,6 +33,7 @@ const ticketToString = (ticket: Ticket | NoTicket) => {
 
 export const htmlRenderer: Renderer = {
   preludeRenderer: () => '<meta charset="utf-8">',
+  contentEnvelope: (content) => `<span>${content}</span>`,
   ticketRenderer: ticketToHtml,
   lineBreak: () => '<br>\n',
 }
@@ -154,10 +161,6 @@ export function testTaskSummary(testTask: TestTask) {
   return `${statusToEmote(status)} Test`
 }
 
-type PreludeRenderer = () => string
-type TicketRenderer = (ticket: Ticket | NoTicket) => string
-type LineBreak = () => string
-
 export function ticketTestSummary(ticketTest: TicketTest, ticketRenderer: TicketRenderer) {
   const status = statusFor(ticketTest)
   return `- ${statusToEmote(status)} ${ticketRenderer(ticketTest.ticket)} ${testersToString(ticketTest.testers)}`
@@ -185,9 +188,14 @@ export const render = (releaseTitle: string | undefined, releaseTasks: Task[], r
         return deriveTestLinesFrom(task, ticketRenderer)
     }
   })
-  const lines = [...prelude, ...title, ...tasks]
+
+  const identity = (content: string) => content
+  const contentEnvelope = renderer.contentEnvelope ?? identity
+  const contentLines = [...title, ...tasks]
+  const content = contentEnvelope(contentLines.join(renderer.lineBreak()))
+  const lines = [...prelude, content]
   const message = lines.join(renderer.lineBreak())
-  return { message, lineCount: lines.length }
+  return { message, lineCount: prelude.length + contentLines.length }
 }
 
 function deriveTestLinesFrom(testTask: TestTask, ticketRenderer: TicketRenderer): string[] {
@@ -205,4 +213,13 @@ export function transitionToNextStatus(status: Status) {
     case 'done':
       return 'todo'
   }
+}
+
+export type Format = 'text/plain' | 'text/html'
+
+export function rendererFor(format: Format) {
+  if (format === 'text/plain') {
+    return textRenderer
+  }
+  return htmlRenderer
 }
