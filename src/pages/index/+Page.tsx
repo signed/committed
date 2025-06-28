@@ -6,6 +6,7 @@ import { timeSpanOver } from '../../core/commits'
 import { htmlRenderer, render, Task, Tester, textRenderer } from '../../core/ReleaseTasks'
 import { TaskSection } from './TaskSection'
 import { ReferencedTickets } from './ReferencedTickets'
+import { useState } from 'react'
 
 export type PageProperties = {
   ticketIdentifierToDetails: TicketIdentifierToDetails
@@ -16,13 +17,23 @@ export type PageProperties = {
   releaseTitle: string | undefined
 }
 
+type Format = 'text/plain' | 'text/html'
+
+function rendererFor(format: Format) {
+  if (format === 'text/plain') {
+    return textRenderer
+  }
+  return htmlRenderer
+}
+
 export function Page(props: PageProperties) {
+  const [format, setFormat] = useState<Format>('text/html')
   const timeSpan = timeSpanOver(props.ticketIdentifierToDetails)
   if (timeSpan === undefined) {
     return <div>No Commits</div>
   }
-  //const { message, lineCount } = render(props.releaseTitle, props.releaseTasks, textRenderer)
-  const { message, lineCount } = render(props.releaseTitle, props.releaseTasks, htmlRenderer)
+  const renderer = rendererFor(format)
+  const { message, lineCount } = render(props.releaseTitle, props.releaseTasks, renderer)
 
   const onCopyToClipboard = async () => {
     await navigator.clipboard.writeText(message)
@@ -31,8 +42,33 @@ export function Page(props: PageProperties) {
     <>
       <SampleLabelingView project={props.project} range={props.range} timeSpan={timeSpan}></SampleLabelingView>
       <h1>Release Tasks</h1>
-      <button onClick={() => onCopyToClipboard()}>Copy to clipboard</button>
-      <textarea rows={lineCount + 3} cols={80} defaultValue={message} />
+      <div>
+        <label>
+          <input
+            type="radio"
+            value="text/plain"
+            checked={format === 'text/plain'}
+            onClick={() => {
+              setFormat('text/plain')
+            }}
+          />
+          text/plain
+        </label>
+        <label>
+          <input
+            type="radio"
+            value="text/html"
+            checked={format === 'text/html'}
+            onClick={() => {
+              setFormat('text/html')
+            }}
+          />
+          text/html
+        </label>
+        <button onClick={() => onCopyToClipboard()}>Copy to clipboard</button>
+      </div>
+
+      <textarea rows={lineCount + 6} cols={80} value={message} />
       <TaskSection tasks={props.releaseTasks} testers={props.testers} />
       <h1>Referenced Tickets</h1>
       <ReferencedTickets ticketIdentifierToDetails={props.ticketIdentifierToDetails}></ReferencedTickets>

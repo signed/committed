@@ -6,6 +6,7 @@ export const StatusValues = ['todo', 'in progress', 'done'] as const
 export type Status = (typeof StatusValues)[number]
 
 export type Renderer = {
+  preludeRenderer?: PreludeRenderer
   ticketRenderer: TicketRenderer
 }
 
@@ -24,6 +25,7 @@ const ticketToString = (ticket: Ticket | NoTicket) => {
 }
 
 export const htmlRenderer = {
+  preludeRenderer: () => '<meta charset="utf-8">',
   ticketRenderer: ticketToHtml,
 }
 
@@ -149,6 +151,7 @@ export function testTaskSummary(testTask: TestTask) {
   return `${statusToEmote(status)} Test`
 }
 
+type PreludeRenderer = () => string
 type TicketRenderer = (ticket: Ticket | NoTicket) => string
 
 export function ticketTestSummary(ticketTest: TicketTest, ticketRenderer: TicketRenderer) {
@@ -166,6 +169,8 @@ export function genericTaskSummary(task: GenericTask) {
 
 export const render = (releaseTitle: string | undefined, releaseTasks: Task[], renderer: Renderer) => {
   const ticketRenderer = renderer.ticketRenderer
+  const preludeRenderer = renderer.preludeRenderer
+  const prelude = preludeRenderer ? [preludeRenderer()] : []
   const title = releaseTitle ? [releaseTitle] : []
   const tasks = releaseTasks.flatMap((task) => {
     const type = task.type
@@ -176,7 +181,7 @@ export const render = (releaseTitle: string | undefined, releaseTasks: Task[], r
         return deriveTestLinesFrom(task, ticketRenderer)
     }
   })
-  const lines = [...title, ...tasks]
+  const lines = [...prelude, ...title, ...tasks]
   const message = lines.join('\n')
   return { message, lineCount: lines.length }
 }
