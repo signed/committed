@@ -1,6 +1,7 @@
 import json from '../http/http-client.private.env.json'
 
 const jira = json.prod.jira
-const base = Buffer.from(`${jira.login}:${jira.token}`).toString('base64')
+const classic = Buffer.from(`${jira.login}:${jira.classic_token}`).toString('base64')
+const scoped = Buffer.from(`${jira.login}:${jira.scoped_token}`).toString('base64')
 
-console.log(base)
+console.log({ classic, scoped })

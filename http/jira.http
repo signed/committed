@@ -3,10 +3,17 @@
 # https://support.atlassian.com/jira/kb/retrieve-my-atlassian-sites-cloud-id/
 # https://admin.atlassian.com
 # https://developer.atlassian.com/cloud/confluence/oauth-2-3lo-apps/#3-2-construct-the-request-url
+# https://community.atlassian.com/forums/Jira-questions/How-to-understand-which-scope-you-need-with-REST-API/qaq-p/3032386
+# scope: read:jira-work
 
-### New Way
+### New Way Issue (scoped token)
+GET https://api.atlassian.com/ex/jira/{{jira.cloudId}}/rest/api/3/issue/LEARNJIRA-1
+Authorization: {{jira.scoped_authorization}}
+accept: application/json
+
+### New Way Issue bulkfetch (scoped token)
 POST https://api.atlassian.com/ex/jira/{{jira.cloudId}}/rest/api/3/issue/bulkfetch
-Authorization: {{jira.authorization}}
+Authorization: {{jira.scoped_authorization}}
 Content-Type: application/json
 accept: application/json
 
@@ -28,9 +35,14 @@ accept: application/json
   "properties": []
 }
 
-### Old Way
+### Old Way Issue
+GET https://{{jira.organisation}}.atlassian.net/rest/api/3/issue/LEARNJIRA-1
+Authorization: {{jira.classic_authorization}}
+accept: application/json
+
+### Old Way Issue bulkfetch (scoped token does not work here)
 POST https://{{jira.organisation}}.atlassian.net/rest/api/3/issue/bulkfetch
-Authorization: {{jira.authorization}}
+Authorization: {{jira.classic_authorization}}
 Content-Type: application/json
 accept: application/json
 
@@ -51,3 +63,4 @@ accept: application/json
   ],
   "properties": []
 }
+
