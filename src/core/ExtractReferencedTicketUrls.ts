@@ -19,12 +19,14 @@ export type NoTicket = {
 export type Hash = string
 export type Author = string
 export type Subject = string
+export type Body = string
 
 export type Commit = {
   hash: Hash
   author: Author
-  subject: Subject
   authorDate: Date
+  subject: Subject
+  body?: Body
 }
 
 export type CommitsContainer = {
@@ -42,13 +44,18 @@ export const extractReferencedTicketUrls = async (configuration: Configuration):
     from: configuration.repository.from,
     to: configuration.repository.to,
   })
-  const commits = out.all.map((l) => ({
-    hash: l.hash,
-    author: l.author,
-    authorDate: new Date(l.dateString),
-    subject: l.subject,
-    body: l.body,
-  }))
+  const commits = out.all.map((l) => {
+    const commit: Commit = {
+      hash: l.hash,
+      author: l.author,
+      authorDate: new Date(l.dateString),
+      subject: l.subject,
+    }
+    if (l.body !== '') {
+      commit.body = l.body
+    }
+    return commit
+  })
 
   const ticketToCommits: TicketIdentifierToDetails = new Map()
   commits.forEach((commit: Commit) => {
