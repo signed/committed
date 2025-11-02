@@ -62,7 +62,8 @@ export class InMemoryTaskStorage implements TaskStorage {
       if (task.type === 'test') {
         const ticketTests = task.ticketTests.map((test) => {
           if (test.ticket.identifier === ticketIdentifier) {
-            return { ...test, testers }
+            const required = testers.length !== 0
+            return { ...test, required, testers }
           }
           return test
         })

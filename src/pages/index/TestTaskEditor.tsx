@@ -11,6 +11,7 @@ import { StatusToggle } from './StatusToggle'
 import { client } from '../../../trpc/client'
 import { TestersSelect } from './TestersSelect'
 import { ExternalLink } from './ExternalLink'
+import { Emote } from './Emote'
 
 type TestTaskEditorProperties = {
   task: TestTask
@@ -38,9 +39,10 @@ export function TestTaskEditor(props: TestTaskEditorProperties) {
               .catch((e) => console.log(e))
           }
           const onChange = enableStatusToggle ? updateStatus : () => {}
+          const emote = ticketTest.required ? <StatusToggle status={status} onChange={onChange} /> : <Emote>⚪</Emote>
           return (
             <li key={ticket.identifier}>
-              <StatusToggle status={status} onChange={onChange} />
+              {emote}
               {' ' + ticketToShortString(ticket)}
               {ticket.kind === 'ticket' && <ExternalLink destination={ticket.url} />}
               {' ' + testersToString(ticketTest.testers)}

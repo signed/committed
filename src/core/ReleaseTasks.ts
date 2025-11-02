@@ -122,16 +122,23 @@ export const deriveReleaseTasks = (
 }
 
 export const overallTestStatus = (testTask: TestTask): Status => {
-  const ticketTests = testTask.ticketTests
-  const atLeastOneInProgress = ticketTests.some((test) => statusFor(test) === 'in progress')
+  const onlyRequired = testTask.ticketTests.filter((it) => it.required)
+  const atLeastOneInProgress = onlyRequired.some((test) => statusFor(test) === 'in progress')
   if (atLeastOneInProgress) {
     return 'in progress'
   }
-  const allDone = ticketTests.every((test) => statusFor(test) === 'done')
+  const allDone = onlyRequired.every((test) => statusFor(test) === 'done')
   if (allDone) {
     return 'done'
   }
   return 'todo'
+}
+
+export const ticketTestToEmote = (ticketTest: TicketTest) => {
+  if (!ticketTest.required) {
+    return '⚪'
+  }
+  return statusToEmote(ticketTest.status)
 }
 
 export const statusToEmote = (status: Status) => {
@@ -165,11 +172,12 @@ export function testTaskSummary(testTask: TestTask) {
 }
 
 export function ticketTestSummary(ticketTest: TicketTest, ticketRenderer: TicketRenderer) {
-  const status = statusFor(ticketTest)
-  return `- ${statusToEmote(status)} ${ticketRenderer(ticketTest.ticket)} ${testersToString(ticketTest.testers)}`
+  const emote = ticketTestToEmote(ticketTest)
+  return `- ${emote} ${ticketRenderer(ticketTest.ticket)} ${testersToString(ticketTest.testers)}`
 }
 
 export function statusFor(ticketTest: TicketTest) {
+  //todo take a look at this one
   return ticketTest.testers.length === 0 ? 'done' : ticketTest.status
 }
 

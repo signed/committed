@@ -1,4 +1,5 @@
 import { Status, statusToEmote, transitionToNextStatus } from '../../core/ReleaseTasks'
+import { Emote } from './Emote'
 
 type StatusToggleProperties = {
   status: Status
@@ -10,5 +11,5 @@ export function StatusToggle(props: StatusToggleProperties) {
     const newStatus = transitionToNextStatus(props.status)
     props.onChange?.(newStatus)
   }
-  return <span onClick={handleClick}>{statusToEmote(props.status)}</span>
+  return <Emote onClick={handleClick}>{statusToEmote(props.status)}</Emote>
 }
