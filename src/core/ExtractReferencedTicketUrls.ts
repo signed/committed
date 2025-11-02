@@ -36,7 +36,7 @@ export type TicketIdentifierToDetails = Map<TicketIdentifier, CommitsContainer>
 export const extractReferencedTicketUrls = async (configuration: Configuration): Promise<TicketIdentifierToDetails> => {
   const git = simpleGit(configuration.repository.baseDirectory)
   const out = await git.log({
-    format: { subject: '%s', author: '%an', dateString: '%aI', hash: '%H' },
+    format: { subject: '%s', body: '%b', author: '%an', dateString: '%aI', hash: '%H' },
     '--ancestry-path': null,
     '--no-merges': null,
     from: configuration.repository.from,
@@ -45,9 +45,11 @@ export const extractReferencedTicketUrls = async (configuration: Configuration):
   const commits = out.all.map((l) => ({
     hash: l.hash,
     author: l.author,
-    subject: l.subject,
     authorDate: new Date(l.dateString),
+    subject: l.subject,
+    body: l.body,
   }))
+
   const ticketToCommits: TicketIdentifierToDetails = new Map()
   commits.forEach((commit: Commit) => {
     const ticketIdentifiers = extractTicketReferencesFrom(commit.subject, configuration.ticketing.project)
