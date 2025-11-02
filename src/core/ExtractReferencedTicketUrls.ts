@@ -1,4 +1,4 @@
-import { Configuration } from '../../server/configuration'
+import { Configuration, GitRepositoryConfiguration, TicketingConfiguration } from '../../server/configuration'
 import { simpleGit } from 'simple-git'
 import { extractTicketReferencesFrom } from './project'
 
@@ -36,15 +36,21 @@ export type CommitsContainer = {
 export type TicketIdentifierToDetails = Map<TicketIdentifier, CommitsContainer>
 
 export const extractReferencedTicketUrls = async (configuration: Configuration): Promise<TicketIdentifierToDetails> => {
-  const git = simpleGit(configuration.repository.baseDirectory)
-  const out = await git.log({
+  const commits = await extractCommits(configuration.repository)
+  return mapTicketsToCommits(commits, configuration.ticketing)
+}
+
+async function extractCommits(repository: GitRepositoryConfiguration): Promise<Commit[]> {
+  const git = simpleGit(repository.baseDirectory)
+  const output = await git.log({
     format: { subject: '%s', body: '%b', author: '%an', dateString: '%aI', hash: '%H' },
     '--ancestry-path': null,
     '--no-merges': null,
-    from: configuration.repository.from,
-    to: configuration.repository.to,
+    from: repository.from,
+    to: repository.to,
   })
-  const commits = out.all.map((l) => {
+
+  return output.all.map((l) => {
     const commit: Commit = {
       hash: l.hash,
       author: l.author,
@@ -56,10 +62,12 @@ export const extractReferencedTicketUrls = async (configuration: Configuration):
     }
     return commit
   })
+}
 
+function mapTicketsToCommits(commits: Commit[], ticketing: TicketingConfiguration) {
   const ticketToCommits: TicketIdentifierToDetails = new Map()
   commits.forEach((commit: Commit) => {
-    const ticketIdentifiers = extractTicketReferencesFrom(commit.subject, configuration.ticketing.project)
+    const ticketIdentifiers = extractTicketReferencesFrom(commit.subject, ticketing.project)
     if (ticketIdentifiers.length === 0) {
       const NoTicketKey = 'no ticket'
       let details = ticketToCommits.get(NoTicketKey)
@@ -76,7 +84,7 @@ export const extractReferencedTicketUrls = async (configuration: Configuration):
         const ticket: Ticket = {
           kind: 'ticket',
           identifier: ticketIdentifier,
-          url: configuration.ticketing.url + ticketIdentifier,
+          url: ticketing.url + ticketIdentifier,
         }
         details = { ticket, commits: [] }
         ticketToCommits.set(ticketIdentifier, details)
