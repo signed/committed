@@ -177,8 +177,10 @@ export function ticketTestSummary(ticketTest: TicketTest, ticketRenderer: Ticket
 }
 
 export function statusFor(ticketTest: TicketTest) {
-  //todo take a look at this one
-  return ticketTest.testers.length === 0 ? 'done' : ticketTest.status
+  if (!ticketTest.required) {
+    return 'done'
+  }
+  return ticketTest.status
 }
 
 export function genericTaskSummary(task: GenericTask) {
