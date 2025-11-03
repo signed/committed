@@ -5,10 +5,14 @@ import { extractTicketReferencesFrom } from './project'
 export type TicketIdentifier = string
 export type NoTicketIdentifier = 'no ticket'
 
+export type TicketUrl = string
+export type TicketSummary = string
+
 export type Ticket = {
   kind: 'ticket'
   identifier: TicketIdentifier
-  url: string
+  url: TicketUrl
+  summary: TicketSummary
 }
 
 export type NoTicket = {
@@ -85,6 +89,7 @@ function mapTicketsToCommits(commits: Commit[], ticketing: TicketingConfiguratio
           kind: 'ticket',
           identifier: ticketIdentifier,
           url: ticketing.url + ticketIdentifier,
+          summary: commit.subject,
         }
         details = { ticket, commits: [] }
         ticketToCommits.set(ticketIdentifier, details)

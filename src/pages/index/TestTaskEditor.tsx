@@ -45,6 +45,7 @@ export function TestTaskEditor(props: TestTaskEditorProperties) {
               {emote}
               {' ' + ticketToShortString(ticket)}
               {ticket.kind === 'ticket' && <ExternalLink destination={ticket.url} />}
+              {ticket.kind === 'ticket' && ' ' + ticket.summary}
               {' ' + testersToString(ticketTest.testers)}
               <TestersSelect
                 availableTesters={props.testers}

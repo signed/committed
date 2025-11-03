@@ -21,14 +21,15 @@ const ticketToHtml = (ticket: Ticket | NoTicket) => {
   if (ticket.kind === 'no-ticket') {
     return '[no ticket]'
   }
-  return `<a href="${ticket.url}" target="_blank" rel="noopener nofollow noreferrer">${ticket.identifier}</a>`
+  const ticketUrl = `<a href="${ticket.url}" target="_blank" rel="noopener nofollow noreferrer">${ticket.identifier}</a>`
+  return `${ticketUrl} ${ticket.summary}`
 }
 
 const ticketToString = (ticket: Ticket | NoTicket) => {
   if (ticket.kind === 'no-ticket') {
     return '[no ticket]'
   }
-  return ticket.url
+  return `${ticket.url} ${ticket.summary}`
 }
 
 export const htmlRenderer: Renderer = {
