@@ -1,6 +1,6 @@
 import { Configuration, GitRepositoryConfiguration, TicketingConfiguration } from '../../server/configuration'
 import { simpleGit } from 'simple-git'
-import { extractTicketReferencesFrom } from './project'
+import { extractSummaryFrom, extractTicketReferencesFrom } from './project'
 
 export type TicketIdentifier = string
 export type NoTicketIdentifier = 'no ticket'
@@ -89,7 +89,7 @@ function mapTicketsToCommits(commits: Commit[], ticketing: TicketingConfiguratio
           kind: 'ticket',
           identifier: ticketIdentifier,
           url: ticketing.url + ticketIdentifier,
-          summary: commit.subject,
+          summary: extractSummaryFrom(commit, ticketing.project),
         }
         details = { ticket, commits: [] }
         ticketToCommits.set(ticketIdentifier, details)
