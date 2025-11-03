@@ -159,11 +159,9 @@ export const ticketToShortString = (ticket: Ticket | NoTicket) => {
   return ticket.identifier
 }
 
-export function testersToString(testers: Tester[]) {
-  if (testers.length === 0) {
-    return 'No Test'
-  }
-  return testers.map((tester) => tester.full).join(', ')
+export function peopleToTalkToFor(ticketTest: TicketTest) {
+  const people = ticketTest.required ? ticketTest.testers.map((tester) => tester.full) : [...ticketTest.ticket.authors]
+  return people.join(', ')
 }
 
 export function testTaskSummary(testTask: TestTask) {
@@ -173,7 +171,7 @@ export function testTaskSummary(testTask: TestTask) {
 
 export function ticketTestSummary(ticketTest: TicketTest, ticketRenderer: TicketRenderer) {
   const emote = ticketTestToEmote(ticketTest)
-  return `- ${emote} ${ticketRenderer(ticketTest.ticket)} ${testersToString(ticketTest.testers)}`
+  return `- ${emote} ${ticketRenderer(ticketTest.ticket)} ${peopleToTalkToFor(ticketTest)}`
 }
 
 export function statusFor(ticketTest: TicketTest) {

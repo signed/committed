@@ -1,6 +1,6 @@
 import {
   Tester,
-  testersToString,
+  peopleToTalkToFor,
   TestTask,
   testTaskSummary,
   ticketToShortString,
@@ -46,7 +46,7 @@ export function TestTaskEditor(props: TestTaskEditorProperties) {
               {' ' + ticketToShortString(ticket)}
               {ticket.kind === 'ticket' && <ExternalLink destination={ticket.url} />}
               {ticket.kind === 'ticket' && ' ' + ticket.summary}
-              {' ' + testersToString(ticketTest.testers)}
+              {' ' + peopleToTalkToFor(ticketTest)}
               <TestersSelect
                 availableTesters={props.testers}
                 assignedTesters={ticketTest.testers}
