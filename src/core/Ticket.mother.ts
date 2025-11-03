@@ -5,6 +5,8 @@ export function anyTicket(overrides: Partial<Ticket> = {}): Ticket {
   return {
     kind: 'ticket',
     identifier,
+    summary: 'Stand in Summary',
+    authors: new Set(),
     url: `http://example.org/${identifier}`,
     ...overrides,
   }

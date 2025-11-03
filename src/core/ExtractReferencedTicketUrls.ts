@@ -13,11 +13,13 @@ export type Ticket = {
   identifier: TicketIdentifier
   url: TicketUrl
   summary: TicketSummary
+  authors: Set<Author>
 }
 
 export type NoTicket = {
   kind: 'no-ticket'
   identifier: NoTicketIdentifier
+  authors: Set<Author>
 }
 
 export type Hash = string
@@ -37,6 +39,7 @@ export type CommitsContainer = {
   ticket: Ticket | NoTicket
   commits: Commit[]
 }
+
 export type TicketIdentifierToDetails = Map<TicketIdentifier, CommitsContainer>
 
 export const extractReferencedTicketUrls = async (configuration: Configuration): Promise<TicketIdentifierToDetails> => {
@@ -76,11 +79,12 @@ function mapTicketsToCommits(commits: Commit[], ticketing: TicketingConfiguratio
       const NoTicketKey = 'no ticket'
       let details = ticketToCommits.get(NoTicketKey)
       if (details === undefined) {
-        const noTicket = { kind: 'no-ticket', identifier: 'no ticket' } satisfies NoTicket
+        const noTicket = { kind: 'no-ticket', identifier: 'no ticket', authors: new Set() } satisfies NoTicket
         details = { ticket: noTicket, commits: [] }
         ticketToCommits.set(NoTicketKey, details)
       }
       details.commits.push(commit)
+      details.ticket.authors.add(commit.author)
     }
     ticketIdentifiers.forEach((ticketIdentifier) => {
       let details = ticketToCommits.get(ticketIdentifier)
@@ -90,11 +94,13 @@ function mapTicketsToCommits(commits: Commit[], ticketing: TicketingConfiguratio
           identifier: ticketIdentifier,
           url: ticketing.url + ticketIdentifier,
           summary: extractSummaryFrom(commit, ticketing.project),
+          authors: new Set(),
         }
         details = { ticket, commits: [] }
         ticketToCommits.set(ticketIdentifier, details)
       }
       details.commits.push(commit)
+      details.ticket.authors.add(commit.author)
     })
   })
   return ticketToCommits

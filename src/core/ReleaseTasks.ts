@@ -83,8 +83,7 @@ const authorToTester = (author: Author): Tester => {
 export type Task = GenericTask | TestTask
 
 const deriveTicketTestFor = (container: CommitsContainer): TicketTest => {
-  const authors = container.commits.map((commit) => commit.author)
-  const testers = [...new Set(authors)].map(authorToTester)
+  const testers = [...container.ticket.authors].map(authorToTester)
   return {
     required: true,
     status: 'todo',
