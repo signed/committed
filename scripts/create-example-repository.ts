@@ -71,5 +71,4 @@ async function setupSampleGitRepository() {
   console.log([`FROM=${initial}`, 'TO=main'].join('\n'))
 }
 
-//@ts-expect-error running on node 20 where this is supported but still have to figure out tsconfig setup
 await setupSampleGitRepository()

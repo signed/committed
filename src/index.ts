@@ -9,6 +9,5 @@ if (configuration === 'failed') {
   process.exit(1)
 }
 
-//@ts-expect-error running on node 20 where this is supported but still have to figure out tsconfig setup
 const ticketLinks = await extractReferencedTicketUrls(configuration)
 console.log(ticketLinks)

@@ -1,6 +1,6 @@
 import TextField from '@mui/material/TextField'
 import Autocomplete from '@mui/material/Autocomplete'
-import { BaseTextFieldProps } from '@mui/material/TextField/TextField'
+import { BaseTextFieldProps } from '@mui/material'
 import { Tester } from '../../core/ReleaseTasks'
 
 export type TestersSelectProperties = {
