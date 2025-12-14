@@ -1,9 +1,10 @@
-import { peopleToTalkToFor, Status, statusFor, Tester, TicketTest, ticketToShortString } from '../../core/ReleaseTasks'
-import { client } from "../../../trpc/client";
-import { StatusToggle } from "./StatusToggle";
-import { Emote } from "./Emote";
-import { ExternalLink } from "./ExternalLink";
-import { TestersSelect } from "./TestersSelect";
+import Box from '@mui/material/Box'
+import { Status, statusFor, Tester, testersFor, TicketTest, ticketToShortString } from '../../core/ReleaseTasks'
+import { client } from '../../../trpc/client'
+import { StatusToggle } from './StatusToggle'
+import { Emote } from './Emote'
+import { ExternalLink } from './ExternalLink'
+import { TestersSelect } from './TestersSelect'
 
 type TicketTestEditorProps = {
   ticketTest: TicketTest
@@ -29,11 +30,16 @@ export const TicketTestEditor = (props: TicketTestEditorProps) => {
   const emote = ticketTest.required ? <StatusToggle status={status} onChange={onChange} /> : <Emote>⚪</Emote>
   return (
     <>
-      {emote}
-      {' ' + ticketToShortString(ticket)}
-      {ticket.kind === 'ticket' && <ExternalLink destination={ticket.url} />}
-      {ticket.kind === 'ticket' && ' ' + ticket.summary}
-      {' ' + peopleToTalkToFor(ticketTest)}
+      <Box component="div">
+        {emote}
+        {' ' + ticketToShortString(ticket)}
+        {ticket.kind === 'ticket' && <ExternalLink destination={ticket.url} />}
+        {ticket.kind === 'ticket' && ' ' + ticket.summary}
+        {' ' + testersFor(ticketTest)}
+      </Box>
+      <Box component="div" sx={{ pt: 1.5 }}>
+        {'Authors: ' + [...ticketTest.ticket.authors].join(', ')}
+      </Box>
       <TestersSelect
         availableTesters={testers}
         assignedTesters={ticketTest.testers}
