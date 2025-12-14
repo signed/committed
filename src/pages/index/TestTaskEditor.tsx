@@ -15,17 +15,17 @@ import { ExternalLink } from './ExternalLink'
 import { Emote } from './Emote'
 
 type TestTaskEditorProperties = {
-  task: TestTask
+  testTask: TestTask
   testers: Tester[]
 }
 
 export function TestTaskEditor(props: TestTaskEditorProperties) {
-  const { task, testers } = props
+  const { testTask, testers } = props
   return (
     <>
-      {testTaskSummary(task)}
+      {testTaskSummary(testTask)}
       <ul>
-        {task.ticketTests.map((ticketTest) => {
+        {testTask.ticketTests.map((ticketTest) => {
           const ticket = ticketTest.ticket
 
           return (

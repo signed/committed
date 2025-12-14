@@ -24,6 +24,6 @@ function editorFor(task: Task, testers: Tester[]) {
     case 'generic':
       return <GenericTaskEditor task={task} />
     case 'test':
-      return <TestTaskEditor task={task} testers={testers} />
+      return <TestTaskEditor testTask={task} testers={testers} />
   }
 }
