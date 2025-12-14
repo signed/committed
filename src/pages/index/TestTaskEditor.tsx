@@ -6,6 +6,7 @@ import {
   ticketToShortString,
   statusFor,
   Status,
+  TicketTest,
 } from '../../core/ReleaseTasks'
 import { StatusToggle } from './StatusToggle'
 import { client } from '../../../trpc/client'
@@ -19,51 +20,68 @@ type TestTaskEditorProperties = {
 }
 
 export function TestTaskEditor(props: TestTaskEditorProperties) {
-  const task = props.task
+  const { task, testers } = props
   return (
     <>
       {testTaskSummary(task)}
       <ul>
         {task.ticketTests.map((ticketTest) => {
           const ticket = ticketTest.ticket
-          const enableStatusToggle = ticketTest.testers.length > 0
-          const status = statusFor(ticketTest)
 
-          const updateStatus = async (status: Status) => {
-            const identifier = ticket.identifier
-            await client.ticketTest.setStatus
-              .mutate({ identifier, status })
-              .then(() => {
-                window.location.reload()
-              })
-              .catch((e) => console.log(e))
-          }
-          const onChange = enableStatusToggle ? updateStatus : () => {}
-          const emote = ticketTest.required ? <StatusToggle status={status} onChange={onChange} /> : <Emote>⚪</Emote>
           return (
             <li key={ticket.identifier}>
-              {emote}
-              {' ' + ticketToShortString(ticket)}
-              {ticket.kind === 'ticket' && <ExternalLink destination={ticket.url} />}
-              {ticket.kind === 'ticket' && ' ' + ticket.summary}
-              {' ' + peopleToTalkToFor(ticketTest)}
-              <TestersSelect
-                availableTesters={props.testers}
-                assignedTesters={ticketTest.testers}
-                onChange={async (testers) => {
-                  const identifier = ticket.identifier
-                  await client.ticketTest.setTesters
-                    .mutate({ identifier, testers })
-                    .then(() => {
-                      window.location.reload()
-                    })
-                    .catch((e) => console.log(e))
-                }}
-              />
+              <TicketTestEditor ticketTest={ticketTest} testers={testers} />
             </li>
           )
         })}
       </ul>
+    </>
+  )
+}
+
+type TicketTestEditorProps = {
+  ticketTest: TicketTest
+  testers: Tester[]
+}
+
+export const TicketTestEditor = (props: TicketTestEditorProps) => {
+  const { ticketTest, testers } = props
+  const { ticket } = ticketTest
+
+  const enableStatusToggle = ticketTest.testers.length > 0
+  const status = statusFor(ticketTest)
+
+  const updateStatus = async (status: Status) => {
+    const identifier = ticket.identifier
+    await client.ticketTest.setStatus
+      .mutate({ identifier, status })
+      .then(() => {
+        window.location.reload()
+      })
+      .catch((e) => console.log(e))
+  }
+  const onChange = enableStatusToggle ? updateStatus : () => {}
+  const emote = ticketTest.required ? <StatusToggle status={status} onChange={onChange} /> : <Emote>⚪</Emote>
+  return (
+    <>
+      {emote}
+      {' ' + ticketToShortString(ticket)}
+      {ticket.kind === 'ticket' && <ExternalLink destination={ticket.url} />}
+      {ticket.kind === 'ticket' && ' ' + ticket.summary}
+      {' ' + peopleToTalkToFor(ticketTest)}
+      <TestersSelect
+        availableTesters={testers}
+        assignedTesters={ticketTest.testers}
+        onChange={async (testers) => {
+          const identifier = ticket.identifier
+          await client.ticketTest.setTesters
+            .mutate({ identifier, testers })
+            .then(() => {
+              window.location.reload()
+            })
+            .catch((e) => console.log(e))
+        }}
+      />
     </>
   )
 }
