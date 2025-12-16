@@ -34,7 +34,7 @@
     "simple-git": "3.30.0",
     "sirv": "3.0.2",
     "vike": "0.4.235",
-    "vite": "7.2.6",
+    "vite": "7.2.7",
     "zod": "4.1.13"
   },
   "devDependencies": {
@@ -44,12 +44,12 @@
     "@tsconfig/strictest": "2.0.8",
     "@types/compression": "1.8.1",
     "@types/express": "5.0.6",
-    "@types/node": "24.10.1",
+    "@types/node": "24.10.2",
     "@types/react": "19.2.7",
     "@types/react-dom": "19.2.3",
-    "@typescript-eslint/eslint-plugin": "8.48.1",
-    "@typescript-eslint/parser": "8.48.1",
-    "@vitejs/plugin-react": "5.1.1",
+    "@typescript-eslint/eslint-plugin": "8.49.0",
+    "@typescript-eslint/parser": "8.49.0",
+    "@vitejs/plugin-react": "5.1.2",
     "cross-env": "10.1.0",
     "eslint": "9.39.1",
     "eslint-config-prettier": "10.1.8",
@@ -63,7 +63,7 @@
     "rimraf": "6.1.2",
     "tsx": "4.21.0",
     "typescript": "5.9.3",
-    "typescript-eslint": "8.48.1",
+    "typescript-eslint": "8.49.0",
     "vitest": "4.0.15"
   },
   "prettier": "@signed/prettier-config"
