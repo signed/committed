@@ -8,30 +8,49 @@ export type Status = (typeof StatusValues)[number]
 type PreludeRenderer = () => string
 type ContentEnvelope = (content: string) => string
 type TicketRenderer = (ticket: Ticket | NoTicket) => string
+type TicketRenderers = {
+  link: TicketRenderer
+  summary: TicketRenderer
+}
 type LineBreak = () => string
 
 export type Renderer = {
   preludeRenderer?: PreludeRenderer
   contentEnvelope?: ContentEnvelope
-  ticketRenderer: TicketRenderer
+  ticketRenderer: TicketRenderers
   lineBreak: LineBreak
 }
 
-const ticketToHtml = (ticket: Ticket | NoTicket) => {
-  if (ticket.kind === 'no-ticket') {
-    return '[no ticket]'
-  }
-  const ticketUrl = `<a href="${ticket.url}" target="_blank" rel="noopener nofollow noreferrer">${ticket.identifier}</a>`
-  return `${ticketUrl} ${ticket.summary}`
+const ticketToHtml: TicketRenderers = {
+  link: (ticket: Ticket | NoTicket) => {
+    if (ticket.kind === 'no-ticket') {
+      return '[no ticket]'
+    }
+    return `<a href="${ticket.url}" target="_blank" rel="noopener nofollow noreferrer">${ticket.identifier}</a>`
+  },
+  summary: (ticket: Ticket | NoTicket) => {
+    if (ticket.kind === 'no-ticket') {
+      return ''
+    }
+
+    return `${ticket.summary}`
+  },
 }
 
-const ticketToString = (ticket: Ticket | NoTicket) => {
-  if (ticket.kind === 'no-ticket') {
-    return '[no ticket]'
-  }
-  return `${ticket.url} ${ticket.summary}`
+const ticketToString = {
+  link: (ticket: Ticket | NoTicket) => {
+    if (ticket.kind === 'no-ticket') {
+      return '[no ticket]'
+    }
+    return `${ticket.url}`
+  },
+  summary: (ticket: Ticket | NoTicket) => {
+    if (ticket.kind === 'no-ticket') {
+      return ''
+    }
+    return `${ticket.summary}`
+  },
 }
-
 export const htmlRenderer: Renderer = {
   preludeRenderer: () => '<meta charset="utf-8">',
   contentEnvelope: (content) => `<span>${content}</span>`,
@@ -171,10 +190,11 @@ export function testTaskSummary(testTask: TestTask) {
   return `${statusToEmote(status)} Test`
 }
 
-export function ticketTestSummary(ticketTest: TicketTest, ticketRenderer: TicketRenderer) {
+export function ticketTestSummary(ticketTest: TicketTest, ticketRenderers: TicketRenderers) {
   const emote = ticketTestToEmote(ticketTest)
-  const ticket = ticketRenderer(ticketTest.ticket)
-  const parts = ['-', emote, ticket]
+  const link = ticketRenderers.link(ticketTest.ticket)
+  const summary = ticketRenderers.summary(ticketTest.ticket)
+  const parts = ['-', emote, link, summary]
   if (ticketTest.required) {
     parts.push(testersFor(ticketTest))
   }
@@ -216,9 +236,9 @@ export const render = (releaseTitle: string | undefined, releaseTasks: Task[], r
   return { message, lineCount: prelude.length + contentLines.length }
 }
 
-function deriveTestLinesFrom(testTask: TestTask, ticketRenderer: TicketRenderer): string[] {
+function deriveTestLinesFrom(testTask: TestTask, ticketRenderers: TicketRenderers): string[] {
   const summary = testTaskSummary(testTask)
-  const testTasks = testTask.ticketTests.map((test) => ticketTestSummary(test, ticketRenderer))
+  const testTasks = testTask.ticketTests.map((test) => ticketTestSummary(test, ticketRenderers))
   return [summary, ...testTasks]
 }
 
