@@ -193,12 +193,15 @@ export function testTaskSummary(testTask: TestTask) {
 export function ticketTestSummary(ticketTest: TicketTest, ticketRenderers: TicketRenderers) {
   const emote = ticketTestToEmote(ticketTest)
   const link = ticketRenderers.link(ticketTest.ticket)
-  const summary = ticketRenderers.summary(ticketTest.ticket)
-  const parts = ['-', emote, link, summary]
+  const parts = ['-', emote, link]
+  if (!ticketTest.required) {
+    parts.push('[NO TEST]')
+  }
+  parts.push(ticketRenderers.summary(ticketTest.ticket))
   if (ticketTest.required) {
     parts.push(testersFor(ticketTest))
   }
-  return parts.join(' ')
+  return parts.filter((it) => it.length > 0).join(' ')
 }
 
 export function statusFor(ticketTest: TicketTest) {
